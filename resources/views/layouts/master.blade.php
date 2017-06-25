@@ -14,7 +14,8 @@
     <body>
         <div id="app">
             @include('header')
-            <div class="container content">
+            <div id="content" class="container">
+                @include('alerts')
                 @yield('content')
             </div>
             @include('footer')

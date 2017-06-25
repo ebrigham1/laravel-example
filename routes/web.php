@@ -19,41 +19,101 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/contact', 'ContactController@index')->name('contact');
     Route::get('/about', 'AboutController@index')->name('about');
 
-    // Role actions are covered by a resource controller
-    Route::/*middleware(['role:root'])->*/resource('roles', 'Roles\RoleController');
-    // Permission section
-    Route::group([/*'middleware' => 'role:root', */'prefix' => 'roles', 'namespace' => 'Roles'], function () {
-        // Permissions actions aren't covered by resource controller because they are listed by role
-        Route::get('{role}/permissions', 'PermissionController@index')->name('permissions.index');
-        Route::get('{role}/permissions/create', 'PermissionController@create')->name('permissions.create');
-        Route::post('{role}/permissions', 'PermissionController@store')->name('permissions.store');
-        Route::get('{role}/permissions/{permission}', 'PermissionController@show')->name('permissions.show');
-        Route::get('{role}/permissions/{permission}/edit', 'PermissionController@edit')->name('permissions.edit');
-        Route::patch('{role}/permissions/{permission}', 'PermissionController@update')->name('permissions.update');
-        Route::delete('{role}/permissions/{permission}', 'PermissionController@destroy')->name('permissions.destroy');
-    });
+    // Users Section
 
-    // Finance section prefixed by /finance controllers in /Finance
-    Route::group(['middleware' => 'role:root|finance', 'prefix' => 'finance', 'namespace' => 'Finance'], function () {
-        Route::get('/', 'FinanceController@index')->name('financeHome');
-        Route::get('/ledger', 'LedgerController@index')->name('ledger');
-    });
+    Route::middleware(['role:root'])->resource('users', 'Users\UserController');
+
+    // Role actions are covered by a resource controller...mostly
+    Route::middleware(['role:root'])->post('/roles/{role}/users', 'Roles\RoleController@storeRoleUsers')
+        ->name('roles.users.store');
+    Route::middleware(['role:root'])->delete('/roles/{role}/users/{user}', 'Roles\RoleController@destroyRoleUser')
+        ->name('roles.users.destroy');
+    Route::middleware(['role:root'])
+        ->get('/ajax/roles/{role}/usersnotinrole', 'Roles\RoleController@usersNotInRoleAjax')
+        ->name('roles.usersNotInRole.ajax');
+    Route::middleware(['role:root'])->get('roles/{role}/users', 'Roles\RoleController@users')
+        ->name('roles.users');
+    Route::middleware(['role:root'])->resource('roles', 'Roles\RoleController');
+
+
+    // Permission section
+    Route::group(
+        [
+            'middleware' => 'role:root',
+            'prefix' => 'roles',
+            'namespace' => 'Roles'
+        ],
+        function () {
+            // Permissions actions aren't covered by resource controller because they are listed by role
+            Route::get('{role}/permissions', 'PermissionController@index')->name('permissions.index');
+            Route::get('{role}/permissions/create', 'PermissionController@create')
+                ->name('permissions.create');
+            Route::post('{role}/permissions', 'PermissionController@store')->name('permissions.store');
+            Route::get('{role}/permissions/{permission}', 'PermissionController@show')
+                ->name('permissions.show');
+            Route::get('{role}/permissions/{permission}/edit', 'PermissionController@edit')
+                ->name('permissions.edit');
+            Route::match(['put', 'patch'], '{role}/permissions/{permission}', 'PermissionController@update')
+                ->name('permissions.update');
+            Route::delete('{role}/permissions/{permission}', 'PermissionController@destroy')
+                ->name('permissions.destroy');
+        }
+    );
 
     // Web section prefixed by /web controllers in /Web
-    Route::group(['middleware' => 'role:root|web', 'prefix' => 'web', 'namespace' => 'Web'], function () {
-        Route::get('/', 'WebController@index')->name('webHome');
-        Route::get('/report', 'WebController@report')->name('webReport');
-    });
+    Route::group(
+        [
+            'middleware' => 'role:root|web_project_manager|web_developer',
+            'prefix' => 'web', 'namespace' => 'Web'
+        ],
+        function () {
+            Route::get('/', 'WebController@index')->name('webHome');
+            Route::middleware(['role:root|web_project_manager'])
+                ->get('/report', 'WebController@report')
+                ->name('webReport');
+        }
+    );
 
     // Sales section prefixed by /sales controllers in /Sales
-    Route::group(['middleware' => 'role:root|sales', 'prefix' => 'sales', 'namespace' => 'Sales'], function () {
-        Route::get('/sales', 'SalesController@index')->name('salesHome');
-        Route::get('/sales/report', 'SalesController@report')->name('salesReport');
-    });
+    Route::group(
+        [
+            'middleware' => 'role:root|sales_manager|sales_associate',
+            'prefix' => 'sales',
+            'namespace' => 'Sales'
+        ],
+        function () {
+            Route::get('/', 'SalesController@index')->name('salesHome');
+            Route::middleware(['role:root|sales_manager'])
+                ->get('/report', 'SalesController@report')
+                ->name('salesReport');
+        }
+    );
+
+    // Finance section prefixed by /finance controllers in /Finance
+    Route::group(
+        [
+            'middleware' => 'role:root|finance_manager|finance_associate',
+            'prefix' => 'finance',
+            'namespace' => 'Finance'
+        ],
+        function () {
+            Route::get('/', 'FinanceController@index')->name('financeHome');
+            Route::middleware(['role:root|finance_manager'])
+                ->get('/ledger', 'LedgerController@index')
+                ->name('ledger');
+        }
+    );
 
     // Warehouse section prefixed by /warehouse controllers in /Warehouse
-    Route::group(['middleware' => 'role:root|warehouse', 'prefix' => 'warehouse', 'namespace' => 'Warehouse'], function () {
-        Route::get('/form', 'WarehouseController@form')->name('warehouseForm');
-        Route::post('/form', 'WarehouseController@formSubmit')->name('warehouseFormSubmit');
-    });
+    Route::group(
+        [
+            'middleware' => 'role:root|warehouse_manager|warehouse_associate',
+            'prefix' => 'warehouse',
+            'namespace' => 'Warehouse'
+        ],
+        function () {
+            Route::get('/form', 'WarehouseController@form')->name('warehouseForm');
+            Route::post('/form', 'WarehouseController@formSubmit')->name('warehouseFormSubmit');
+        }
+    );
 });

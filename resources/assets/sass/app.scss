@@ -4,19 +4,61 @@
 // Mixins
 @import "mixins";
 
-// Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-
 // Header
 @import "header";
 
 // Footer
 @import "footer";
 
+// Normalize scss
+@import "node_modules/normalize-scss/sass/normalize";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+// Select2
+@import "node_modules/select2/src/scss/core";
+
+// Select 2 bootstrap theme
+@import "node_modules/select2-bootstrap-theme/src/select2-bootstrap";
+
+// Font-awesome
+@import "node_modules/font-awesome/scss/font-awesome";
+
 body {
   background: $body-bg;
 }
 
+div#content {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+ol.breadcrumb {
+  border-radius: 0;
+  margin-bottom: 0;
+  padding: 0;
+  background-color: transparent;
+
+}
+div.page-header {
+  margin: 0;
+  margin-bottom: 15px;
+  padding: 0;
+}
+h1 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+h4.no-desc {
+  margin-bottom: 0;
+}
 form#logout-form {
   display: none;
+}
+// Special button styling for buttons attached to list group
+.list-group > .input-group > .input-group-btn > button.btn {
+  line-height: 2.2;
+}
+div.popover.confirmation {
+  width: 400px;
 }

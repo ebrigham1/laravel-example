@@ -17,11 +17,25 @@ mix.autoload({
 });
 
 mix.js('resources/assets/js/app.js', 'public/js')
-    .extract(['axios', 'jquery', 'bootstrap-sass', 'lodash', 'vue'])
+    .extract(
+        [
+            'axios',
+            'jquery',
+            'bootstrap-sass',
+            'lodash',
+            'normalize-scss',
+            'select2',
+            'bootstrap-hover-dropdown',
+            'bootstrap-confirmation2/bootstrap-confirmation'
+        ]
+    )
     .sass('resources/assets/sass/app.scss', 'public/css');
 
 if (mix.config.inProduction) {
     mix.version();
 } else {
+    // Temp sourceMaps() isn't working so we have to use this workaround
+    // to let it know to use inline-source-map as the devtool
+    mix.webpackConfig({ devtool: "inline-source-map" });
     mix.sourceMaps();
 }

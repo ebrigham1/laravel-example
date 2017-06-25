@@ -21,7 +21,7 @@ class SalesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function formSubmit()
+    public function report()
     {
         return view('sales.report');
     }

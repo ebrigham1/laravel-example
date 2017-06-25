@@ -94,4 +94,8 @@ return [
         ],
     ],
 
+    /**
+     * Entrust lib seems to require this key
+     */
+    'model' => App\Models\User::class,
 ];
