@@ -1,0 +1,22 @@
+// Variables
+@import "variables";
+
+// Mixins
+@import "mixins";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+// Header
+@import "header";
+
+// Footer
+@import "footer";
+
+body {
+  background: $body-bg;
+}
+
+form#logout-form {
+  display: none;
+}
