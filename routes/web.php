@@ -20,7 +20,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/about', 'AboutController@index')->name('about');
 
     // Users Section
-
     Route::middleware(['role:root'])->resource('users', 'Users\UserController');
 
     // Role actions are covered by a resource controller...mostly
