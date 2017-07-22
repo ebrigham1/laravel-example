@@ -4,9 +4,11 @@
 # add any commands you wish to this file and they will
 # be run after the Homestead machine is provisioned.
 
-(cd ~/laravel && exec cp pre-commit .git/hooks/pre-commit)
-(cd ~/laravel && exec cp config-pre-commit .git/hooks/config-pre-commit)
-(cd ~/laravel && exec npm install)
-(cd ~/laravel && exec npm run dev)
-(cd ~/laravel && exec php artisan key:generate)
-(cd ~/laravel && exec php artisan migrate:refresh --seed)
+pwd
+cd /home/vagrant/laravel
+cp pre-commit .git/hooks/pre-commit
+cp config-pre-commit .git/hooks/config-pre-commit
+npm install
+npm run dev
+php artisan key:generate
+php artisan migrate:refresh --seed
