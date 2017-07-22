@@ -4,5 +4,9 @@
 # add any commands you wish to this file and they will
 # be run after the Homestead machine is provisioned.
 
-cp /home/vagrant/Code/laravel-clone/pre-commit /home/vagrant/Code/laravel-clone/.git/hooks/pre-commit
-cp /home/vagrant/Code/laravel-clone/config-pre-commit /home/vagrant/Code/laravel-clone/.git/hooks/config-pre-commit
+cd /home/vagrant/Code/laravel-clone
+cp pre-commit .git/hooks/pre-commit
+cp config-pre-commit .git/hooks/config-pre-commit
+npm install
+npm run dev
+php artisan: migrate:refresh --seed

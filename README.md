@@ -10,8 +10,6 @@ Download or clone the repo, once done navigate to the main directory in the comm
 ```bash
 cp .env.example .env
 composer install
-npm install
-npm run dev
 ```
 
 Next you'll need an environment file so copy .env.example to .env using your preferred method.
