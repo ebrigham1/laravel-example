@@ -9,4 +9,5 @@ cp pre-commit .git/hooks/pre-commit
 cp config-pre-commit .git/hooks/config-pre-commit
 npm install
 npm run dev
-php artisan: migrate:refresh --seed
+php artisan key:generate
+php artisan migrate:refresh --seed
