@@ -21,6 +21,13 @@
                                         {{ Auth::user()->name }} <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu" role="menu">
+                                        @role('root')
+                                            <li>
+                                                <a href="{{ route('auth.switchUser') }}">
+                                                    Switch User
+                                                </a>
+                                            </li>
+                                        @endrole
                                         <li>
                                             <a id="logout-link" href="{{ route('logout') }}" onclick="event.preventDefault(); $('#logout-form').submit();">
                                                 Logout

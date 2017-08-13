@@ -15,6 +15,10 @@ Auth::routes();
 
 // You must authenticate to get to any page on our site
 Route::group(['middleware' => 'auth'], function () {
+    Route::middleware(['role:root'])->get('/switch/user', 'Auth\SwitchUserController@index')->name('auth.switchUser');
+    Route::middleware(['role:root'])->post('/switch/user', 'Auth\SwitchUserController@switch')
+        ->name('auth.switchUserSwitch');
+    Route::get('/users/ajax', 'Users\UserController@indexAjax')->name('users.getUsers.ajax');
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/contact', 'ContactController@index')->name('contact');
     Route::get('/about', 'AboutController@index')->name('about');
