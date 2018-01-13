@@ -10,6 +10,7 @@ return [
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
+    |
     */
 
     'name' => env('APP_NAME', 'Laravel'),
@@ -124,8 +125,6 @@ return [
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
-    'perPage' => '50',
-
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -138,6 +137,7 @@ return [
     */
 
     'providers' => [
+
         /*
          * Laravel Framework Service Providers...
          */
@@ -166,8 +166,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Laravel\Tinker\TinkerServiceProvider::class,
-        Abrigham\LaravelEmailExceptions\EmailExceptionsServiceProvider::class,
         Adldap\Laravel\AdldapServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Sven\EnvProviders\EnvServiceProvider::class,
@@ -176,7 +174,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ],
@@ -193,7 +191,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,

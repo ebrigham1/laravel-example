@@ -10,6 +10,7 @@
         @section('css')
             <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
         @show
+        <script src="https://{{ Request::getHost() }}:6001/socket.io/socket.io.js"></script>
     </head>
     <body>
         <div id="app">

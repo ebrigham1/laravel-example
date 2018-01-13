@@ -6,7 +6,7 @@ PHPCS_BIN=$(dirname $0)/../../vendor/bin/phpcs
 PHPCS_CODING_STANDARD=PSR2
 
 # comma-separated list of file patterns being ignored
-PHPCS_IGNORE=vendor,database
+PHPCS_IGNORE=vendor,database,public/index.php
 
 # comma-seperated list of sniffs from the standard that should be used
 # use `phpcs --standard=PSR1 -e` to list sniffs for your standard
