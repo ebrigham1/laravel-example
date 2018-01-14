@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Roles;
 
+use App\Events\UsersAttachedToRole;
+use App\Events\UserDetachedFromRole;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use Auth;
 use Config;
 use Illuminate\Http\Request;
 use Response;
@@ -161,6 +164,8 @@ class RoleController extends Controller
             'Successfully attached user(s) "'
             . $users->implode('name', ', ') . '" to role "' . $role->display_name . '"'
         );
+        // Fire event
+        event(new UsersAttachedToRole(Auth::user(), $users, $role));
         return redirect()->route('roles.users', ['role' => $role]);
     }
 
@@ -173,6 +178,8 @@ class RoleController extends Controller
             'success',
             'Successfully removed user "' . $user->name . '" from role "' . $role->display_name . '"'
         );
+        // Fire event
+        event(new UserDetachedFromRole(Auth::user(), $user, $role));
         return redirect()->route('roles.users', ['role' => $role]);
     }
 }

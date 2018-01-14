@@ -22,6 +22,7 @@
         "normalize-scss": "^7.0.0",
         "select2": "^4.0.3",
         "select2-bootstrap-theme": "0.1.0-beta.10",
-        "vue": "^2.3.4"
+        "vue": "^2.3.4",
+        "laravel-echo": "^1.3.3"
     }
 }

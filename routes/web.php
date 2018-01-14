@@ -22,6 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/contact', 'ContactController@index')->name('contact');
     Route::get('/about', 'AboutController@index')->name('about');
+    Route::get('/activity_log', 'ActivityLogController@index')->name('activityLog');
 
     // Users Section
     Route::middleware(['role:root'])->resource('users', 'Users\UserController');

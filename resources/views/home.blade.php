@@ -27,6 +27,7 @@
                 @role(['root', 'warehouse_manager', 'warehouse_associate'])
                     <a class="list-group-item" href="{{ route('warehouseForm') }}">Warehouse</a>
                 @endrole
+                <a class="list-group-item" href="{{ route('activityLog') }}">Activity Log</a>
             </div>
         </div>
     </div>

@@ -27,4 +27,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Define relationship between a user and their activity logs
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activityLogs()
+    {
+        return $this->hasMany('App\Models\ActivityLog');
+    }
 }
