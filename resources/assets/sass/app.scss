@@ -67,3 +67,6 @@ span.list-group-item-date {
   right: 15px;
   font-size: smaller;
 }
+select.form-control[multiple]:not(.select2-hidden-accessible) {
+  height: 38px;
+}

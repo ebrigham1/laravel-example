@@ -5,6 +5,7 @@ namespace App\Events;
 use App\Contracts\ActivityLogEvent;
 use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Queue\SerializesModels;
@@ -67,8 +68,9 @@ class UsersAttachedToRole implements ActivityLogEvent
     public function broadcastWith(): array
     {
         return [
-            'user_name' => $this->user->name,
+            'userName' => $this->user->name,
             'description' => $this->description,
+            'createdAt' => Carbon::now()->diffForHumans()
         ];
     }
 

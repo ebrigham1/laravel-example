@@ -16,7 +16,7 @@ mix.autoload({
     'jquery': ['window.jQuery', 'jQuery', '$']
 });
 
-mix.js('resources/assets/js/app.js', 'public/js')
+mix.react('resources/assets/js/app.js', 'public/js')
     .extract(
         [
             'axios',
@@ -26,10 +26,12 @@ mix.js('resources/assets/js/app.js', 'public/js')
             'normalize-scss',
             'select2',
             'bootstrap-hover-dropdown',
-            'bootstrap-confirmation2/bootstrap-confirmation'
+            'bootstrap-confirmation2/bootstrap-confirmation',
+            'react',
+            'react-dom'
         ]
     )
-    .js('resources/assets/js/activityLog.js', 'public/js')
+    .react('resources/assets/js/activityLog.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css');
 
 if (mix.config.inProduction) {

@@ -40,7 +40,7 @@
                                 {{ $user->name }}
                             </a>
                             <span class="input-group-btn">
-                                @include('shared.deleteButton', ['name' => 'user', 'route' => route('roles.users.destroy', ['role' => $role, 'user' => $user]), 'deleteIcon' => 'fa-user-times'])
+                                @include('shared.deleteButton', ['name' => 'user' . $user->id, 'route' => route('roles.users.destroy', ['role' => $role, 'user' => $user]), 'deleteIcon' => 'fa-user-times'])
                             </span>
                         </div>
                     @endforeach
