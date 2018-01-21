@@ -6,8 +6,8 @@
 
 cd /home/vagrant/code
 # Set up the code style checking pre-commit hook
-cp pre-commit .git/hooks/pre-commit
-cp config-pre-commit .git/hooks/config-pre-commit
+cp codesniffer/pre-commit .git/hooks/pre-commit
+cp codesniffer/config-pre-commit .git/hooks/config-pre-commit
 # Make sure composer is completely up to date
 sudo composer self-update
 sudo apt update
@@ -26,9 +26,9 @@ npm install
 # Run the front end assets
 npm run dev
 # Set up supervisor for the echo server and horizon queue manager
-sudo cp horizon.conf /etc/supervisor/conf.d/horizon.conf
-sudo cp echo-server.conf /etc/supervisor/conf.d/echo-server.conf
-sudo cp npm-watch.conf /etc/supervisor/conf.d/npm-watch.conf
+sudo cp supervisor/horizon.conf /etc/supervisor/conf.d/horizon.conf
+sudo cp supervisor/echo-server.conf /etc/supervisor/conf.d/echo-server.conf
+sudo cp supervisor/npm-watch.conf /etc/supervisor/conf.d/npm-watch.conf
 sudo supervisorctl reread
 sudo supervisorctl update
 cd
