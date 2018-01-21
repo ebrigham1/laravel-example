@@ -1,16 +1,16 @@
 @extends('layouts.master')
 
-@section('title', 'Activity Log')
+@section('title', 'Most Recent Activities')
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <ol class="breadcrumb">
                 <li><a href="{{ route('home') }}">Home</a></li>
-                <li class="active">Activity Log</li>
+                <li class="active">Most Recent Activities</li>
             </ol>
             <div class="page-header">
-                <h1>Activity Log</h1>
+                <h1>Most Recent Activites</h1>
             </div>
             <div id="activityLogs" class="list-group">
                 @foreach ($activityLogs as $activityLog)

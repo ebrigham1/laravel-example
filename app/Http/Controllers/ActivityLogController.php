@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Config;
+use Response;
 
 class ActivityLogController extends Controller
 {
@@ -13,9 +14,20 @@ class ActivityLogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function mostRecent()
     {
-        $activityLogs = ActivityLog::orderBy('id', 'desc')->paginate(Config::get('app.perPage'));
-        return view('activityLog', compact('activityLogs'));
+        $activityLogs = ActivityLog::latest()->paginate(Config::get('app.perPage'));
+        return view('mostRecentActivities', compact('activityLogs'));
+    }
+
+    /**
+     * Display a listing of site activity via ajax.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function mostRecentAjax()
+    {
+        $activityLogs = ActivityLog::latest()->paginate(Config::get('app.perPage'));
+        return Response::json($activityLogs);
     }
 }

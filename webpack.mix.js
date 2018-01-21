@@ -28,7 +28,10 @@ mix.react('resources/assets/js/app.js', 'public/js')
             'bootstrap-hover-dropdown',
             'bootstrap-confirmation2/bootstrap-confirmation',
             'react',
-            'react-dom'
+            'react-dom',
+            'babel-preset-react/lib',
+            'jquery-bridget',
+            'infinite-scroll/js'
         ]
     )
     .react('resources/assets/js/activityLog.js', 'public/js')
