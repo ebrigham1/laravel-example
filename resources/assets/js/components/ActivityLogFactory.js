@@ -6,46 +6,41 @@ class ActivityLogFactory
     /**
      * Create an activity log dom element
      *
-     * @param string userName
-     * @param string createdAt
-     * @param string description
-     * @returns {HTMLElement}
+     * @param {HTMLElement} element
+     * @param {string} userName
+     * @param {string} createdAt
+     * @param {string} description
+     * @returns {void}
      */
-    static createAndAppend(userName, createdAt, description) {
-        console.log();
+    static createAndAppend(element, userName, createdAt, description) {
         let activityLog = this.createContainer(userName, createdAt, description, false);
         // Append the new activity to the logs
-        $('div#activityLogs').append(activityLog);
+        element.append(activityLog);
     }
 
     /**
      * Create an activity log dom element
      *
-     * @param string userName
-     * @param string createdAt
-     * @param string description
-     * @returns {HTMLElement}
+     * @param {HTMLElement} element
+     * @param {string} userName
+     * @param {string} createdAt
+     * @param {string} description
+     * @returns {void}
      */
-    static createAndPrepend(userName, createdAt, description) {
+    static createAndPrepend(element, userName, createdAt, description) {
         let activityLog = this.createContainer(userName, createdAt, description);
-        // If we don't have any activity logs clear out the div
-        if ($('div#noActivities').length) {
-            $('div#noActivities').slideUp(500, function() {
-                $('div#noActivities').remove();
-            });
-        }
         // Prepend the new activity to the logs
-        $('div#activityLogs').prepend(activityLog);
+        element.prepend(activityLog);
         activityLog.slideDown(500);
     }
 
     /**
      * Create an activity log container element
      *
-     * @param string userName
-     * @param string createdAt
-     * @param string description
-     * @param bool hide
+     * @param {string} userName
+     * @param {string} createdAt
+     * @param {string} description
+     * @param {bool} hide
      * @returns {HTMLElement}
      */
     static createContainer(userName, createdAt, description, hide = true)
@@ -63,43 +58,43 @@ class ActivityLogFactory
     /**
      * Create an activity log heading element
      *
-     * @param string userName
-     * @param string createdAt
+     * @param {string} userName
+     * @param {string} createdAt
      * @returns {HTMLElement}
      */
     static createHeading(userName, createdAt)
     {
         return $('<h4>', {
             'class': 'list-group-item-heading',
-            'html': userName
+            'text': userName
         }).append(this.createDate(createdAt));
     }
 
     /**
      * Create an activity log date element
      *
-     * @param string createdAt
+     * @param {string} createdAt
      * @returns {HTMLElement}
      */
     static createDate(createdAt)
     {
         return $('<span>', {
             'class': 'list-group-item-date',
-            'html': createdAt
+            'text': createdAt
         });
     }
 
     /**
      * Create an activity log description element
      *
-     * @param string description
+     * @param {string} description
      * @returns {HTMLElement}
      */
     static createDescription(description)
     {
         return $('<p/>', {
             'class': 'list-group-item-text',
-            'html': description
+            'text': description
         });
     }
 }

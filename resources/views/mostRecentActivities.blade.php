@@ -10,7 +10,7 @@
                 <li class="active">Most Recent Activities</li>
             </ol>
             <div class="page-header">
-                <h1>Most Recent Activites</h1>
+                <h1>Most Recent Activities</h1>
             </div>
             <div data-last-page-index="{{ $activityLogs->lastPage() }}" data-has-more-pages="{{ $activityLogs->hasMorePages() }}" data-last-page="" data-base-ajax-url="{{ route('mostRecentActivitiesAjax') }}" id="activityLogs" class="list-group">
                 @foreach ($activityLogs as $activityLog)
@@ -20,9 +20,7 @@
                     </div>
                 @endforeach
             </div>
-            @if (!$activityLogs->isEmpty())
-                {{ $activityLogs->links() }}
-            @else
+            @if ($activityLogs->isEmpty())
                 <div id="noActivities">
                     No Activities Found
                 </div>

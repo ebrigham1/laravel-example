@@ -68,9 +68,9 @@ class UsersAttachedToRole implements ActivityLogEvent
     public function broadcastWith(): array
     {
         return [
-            'userName' => $this->user->name,
+            'user_name' => $this->user->name,
             'description' => $this->description,
-            'createdAt' => Carbon::now()->diffForHumans()
+            'created_at_diff_for_humans' => Carbon::now()->diffForHumans(),
         ];
     }
 
