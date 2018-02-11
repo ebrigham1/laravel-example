@@ -37,12 +37,12 @@ if (activityLogsContainer.data('hasMorePages')) {
         },
         // Response type text for json
         responseType: 'text',
-        // Don't append becuase we will be doing it manually in the load function with the json we get back
+        // Don't append because we will be doing it manually in the load function with the json we get back
         append: false,
-        // Don't affect browser history (this would be a nice addition at some point
+        // Don't affect browser history (this would be a nice addition at some point)
         history: false,
     });
-    // Infinite scroll load event (when data is loaded from the ajax endpoint
+    // Infinite scroll load event (param is response from ajax endpoint)
     infiniteScroll.on('load', function(response) {
         // Parse the json data
         let data = JSON.parse(response);
