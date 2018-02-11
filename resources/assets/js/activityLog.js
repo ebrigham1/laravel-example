@@ -60,5 +60,3 @@ if (activityLogsContainer.data('hasMorePages')) {
         }
     });
 }
-
-
