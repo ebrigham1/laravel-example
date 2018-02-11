@@ -11,7 +11,22 @@ class ActivityLogFactory
      * @param string description
      * @returns {HTMLElement}
      */
-    static create(userName, createdAt, description) {
+    static createAndAppend(userName, createdAt, description) {
+        console.log();
+        let activityLog = this.createContainer(userName, createdAt, description, false);
+        // Append the new activity to the logs
+        $('div#activityLogs').append(activityLog);
+    }
+
+    /**
+     * Create an activity log dom element
+     *
+     * @param string userName
+     * @param string createdAt
+     * @param string description
+     * @returns {HTMLElement}
+     */
+    static createAndPrepend(userName, createdAt, description) {
         let activityLog = this.createContainer(userName, createdAt, description);
         // If we don't have any activity logs clear out the div
         if ($('div#noActivities').length) {
@@ -30,15 +45,18 @@ class ActivityLogFactory
      * @param string userName
      * @param string createdAt
      * @param string description
+     * @param bool hide
      * @returns {HTMLElement}
      */
-    static createContainer(userName, createdAt, description)
+    static createContainer(userName, createdAt, description, hide = true)
     {
-        return $("<div>", {
+        let element = $("<div>", {
             'class': 'list-group-item',
-            'style': 'display: none;'
-        })
-            .append(this.createHeading(userName, createdAt))
+        });
+        if (hide) {
+           element.css('display', 'none');
+        }
+        return element.append(this.createHeading(userName, createdAt))
             .append(this.createDescription(description));
     }
 

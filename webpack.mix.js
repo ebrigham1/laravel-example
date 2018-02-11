@@ -30,7 +30,6 @@ mix.react('resources/assets/js/app.js', 'public/js')
             'react',
             'react-dom',
             'babel-preset-react/lib',
-            'jquery-bridget',
             'infinite-scroll/js'
         ]
     )

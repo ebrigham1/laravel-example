@@ -19,10 +19,10 @@
                 <div class="form-group{{ $errors->has('users') ? ' has-error' : '' }}">
                     <label class="sr-only" for="users">Users</label>
                     <div class="input-group">
-                        <select id="users" name="users[]" multiple="multiple" class="form-control" data-toggle="remoteUserSelect2" data-placeholder="Please type the name(s) of users you wish to add to this role" data-ajax--url="{{ route('roles.usersNotInRole.ajax', ['role' => $role]) }}" required style="width: 100%;">
+                        <select tabindex="1" id="users" name="users[]" multiple="multiple" class="form-control" data-toggle="remoteUserSelect2" data-placeholder="Please type the name(s) of users you wish to add to this role" data-ajax--url="{{ route('roles.usersNotInRole.ajax', ['role' => $role]) }}" required style="width: 100%;">
                         </select>
                         <span class="input-group-btn">
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
+                            <button tabindex="2" type="submit" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
                         </span>
                     </div>
                     @if ($errors->has('users'))

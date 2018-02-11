@@ -16,7 +16,7 @@ class ActivityLogController extends Controller
      */
     public function mostRecent()
     {
-        $activityLogs = ActivityLog::latest()->paginate(Config::get('app.perPage'));
+        $activityLogs = ActivityLog::latest()->with('user')->paginate(Config::get('app.perPage'));
         return view('mostRecentActivities', compact('activityLogs'));
     }
 
@@ -27,7 +27,7 @@ class ActivityLogController extends Controller
      */
     public function mostRecentAjax()
     {
-        $activityLogs = ActivityLog::latest()->paginate(Config::get('app.perPage'));
+        $activityLogs = ActivityLog::latest()->with('user')->paginate(Config::get('app.perPage'));
         return Response::json($activityLogs);
     }
 }
