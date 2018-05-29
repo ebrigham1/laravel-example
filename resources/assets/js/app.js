@@ -60,7 +60,6 @@ $('[data-toggle="remoteUserSelect2"]').select2({
     },
     minimumInputLength: 1,
     allowClear: true,
-    theme: "bootstrap",
 });
 // Login form
 $('a#logout-link').click(function () {

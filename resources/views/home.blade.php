@@ -5,9 +5,9 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <ol class="breadcrumb">
-                <li class="active">Home</li>
-            </ol>
+            @breadcrumbs
+                <li class="breadcrumb-item active" aria-current="page">Home</li>
+            @endbreadcrumbs
             <div class="page-header">
                 <h1>Home</h1>
             </div>

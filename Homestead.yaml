@@ -9,7 +9,7 @@ folders:
     - map: ./
       to: /home/vagrant/code
 sites:
-    - map: laravel.app
+    - map: laravel.test
       to: /home/vagrant/code/public
       schedule: true
 databases:

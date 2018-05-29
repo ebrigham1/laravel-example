@@ -1,3 +1,6 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
 // Variables
 @import "variables";
 
@@ -10,20 +13,14 @@
 // Footer
 @import "footer";
 
-// Normalize scss
-@import "node_modules/normalize-scss/sass/normalize";
-
 // Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
 // Select2
-@import "node_modules/select2/src/scss/core";
-
-// Select 2 bootstrap theme
-@import "node_modules/select2-bootstrap-theme/src/select2-bootstrap";
+@import "~select2/src/scss/core";
 
 // Font-awesome
-@import "node_modules/font-awesome/scss/font-awesome";
+@import "~font-awesome/scss/font-awesome";
 
 body {
   background: $body-bg;

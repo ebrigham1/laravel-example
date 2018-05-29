@@ -15,84 +15,84 @@ class UserSeeder extends Seeder
         User::create(
             [
                 'name' => 'root',
-                'email' => 'root@laravel.app',
+                'email' => 'root@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Juan Di Diego',
-                'email' => 'juand@laravel.app',
+                'email' => 'juand@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Ethan Brigham',
-                'email' => 'ethanb@laravel.app',
+                'email' => 'ethanb@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Cody Miller',
-                'email' => 'codym@laravel.app',
+                'email' => 'codym@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Hanna Davis',
-                'email' => 'hannad@laravel.app',
+                'email' => 'hannad@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Peter Jacobo',
-                'email' => 'peterj@laravel.app',
+                'email' => 'peterj@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Sales Manager',
-                'email' => 'salesManager@laravel.app',
+                'email' => 'salesManager@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Sales Associate',
-                'email' => 'salesAssociate@laravel.app',
+                'email' => 'salesAssociate@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Finance Manager',
-                'email' => 'financeManager@laravel.app',
+                'email' => 'financeManager@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Finance Associate',
-                'email' => 'financeAssociate@laravel.app',
+                'email' => 'financeAssociate@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Warehouse Manager',
-                'email' => 'warehouseManager@laravel.app',
+                'email' => 'warehouseManager@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );
         User::create(
             [
                 'name' => 'Warehouse Associate',
-                'email' => 'warehouseAssociate@laravel.app',
+                'email' => 'warehouseAssociate@laravel.test',
                 'password' => bcrypt('password'),
             ]
         );

@@ -21,12 +21,11 @@ mix.react('resources/assets/js/app.js', 'public/js')
         [
             'axios',
             'jquery',
-            'bootstrap-sass',
+            'bootstrap',
             'lodash',
-            'normalize-scss',
             'select2',
             'bootstrap-hover-dropdown',
-            'bootstrap-confirmation2/bootstrap-confirmation',
+            'bootstrap-confirmation2/dist/bootstrap-confirmation',
             'react',
             'react-dom',
             'babel-preset-react/lib',
@@ -39,5 +38,7 @@ mix.react('resources/assets/js/app.js', 'public/js')
 if (mix.config.inProduction) {
     mix.version();
 } else {
-    mix.sourceMaps();
+    mix.webpackConfig({
+        devtool: 'source-map'
+    }).sourceMaps();
 }
