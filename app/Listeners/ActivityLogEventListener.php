@@ -2,10 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Contracts\ActivityLogEvent;
-use App\Events\UsersAttachedToRole;
-use App\Events\UserDetachedFromRole;
-use App\Models\ActivityLog;
+use App\Contracts\ActivityLogEventContract;
 
 /**
  * Class ActivityLogEventListener handles all events that should generate
@@ -18,10 +15,10 @@ class ActivityLogEventListener
     /**
      * Handle an activity log event
      *
-     * @param \App\Contracts\ActivityLogEvent $event
+     * @param \App\Contracts\ActivityLogEventContract $event
      * @return void
      */
-    public function handle(ActivityLogEvent $event)
+    public function handle(ActivityLogEventContract $event)
     {
         // Get the user that created did the activity
         $user = $event->getUser();

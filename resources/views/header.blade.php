@@ -5,7 +5,7 @@
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <a class="navbar-brand" href="{{ route('home') }}">
-                            Laravel.app
+                            Laravel.test
                         </a>
                     </div>
                     <div class="collapse navbar-collapse" id="app-navbar-collapse">

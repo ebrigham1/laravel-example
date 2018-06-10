@@ -6,13 +6,14 @@ use App\Models\User;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /**
- * Interface ActivityLogEvent
+ * Interface ActivityLogEventContract
  *
- * Activity log events must define one function that gives the activity log its description when being created.
+ * Activity log events must define two functions. One that gives the activity log its description
+ * and one that gives it its user when being created.
  *
  * @package App\Contracts
  */
-interface ActivityLogEvent extends ShouldBroadcast
+interface ActivityLogEventContract extends ShouldBroadcast
 {
     /**
      * Get the description to use for this activity log entry

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ActivityLog extends Model
 {
@@ -27,17 +28,17 @@ class ActivityLog extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
     }
 
     /**
      * Get the readable time for humans between now and the creation date.
      *
-     * @return bool
+     * @return string
      */
-    public function getCreatedAtDiffForHumansAttribute()
+    public function getCreatedAtDiffForHumansAttribute(): string
     {
         return $this->created_at->diffForHumans();
     }

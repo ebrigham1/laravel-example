@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Contracts\ActivityLogEvent;
+use App\Contracts\ActivityLogEventContract;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class UsersAttachedToRole implements ActivityLogEvent
+class UsersAttachedToRole implements ActivityLogEventContract
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

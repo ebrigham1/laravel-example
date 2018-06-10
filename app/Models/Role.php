@@ -23,7 +23,7 @@ class Role extends EntrustRole
      * @param $value
      * @return string
      */
-    public function getDisplayNameAttribute($value)
+    public function getDisplayNameAttribute($value): string
     {
         return $value ? $value : $this->name;
     }

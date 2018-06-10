@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
@@ -33,8 +34,8 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function activityLogs()
+    public function activityLogs(): HasMany
     {
-        return $this->hasMany('App\Models\ActivityLog');
+        return $this->hasMany(ActivityLog::class);
     }
 }

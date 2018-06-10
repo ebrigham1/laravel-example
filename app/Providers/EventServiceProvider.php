@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
+use App\Contracts\ActivityLogEventContract;
+use App\Listeners\ActivityLogEventListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,8 +14,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Contracts\ActivityLogEvent' => [
-            'App\Listeners\ActivityLogEventListener',
+        ActivityLogEventContract::class => [
+            ActivityLogEventListener::class,
         ],
     ];
 

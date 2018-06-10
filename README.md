@@ -1,4 +1,4 @@
-# laravel.app
+# laravel.test
 
 ## Table of Contents
 * [Installation](#installation)
