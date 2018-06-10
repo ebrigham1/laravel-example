@@ -26,7 +26,7 @@ $('[data-toggle=deleteConfirmation]').confirmation({
     btnCancelIcon: 'glyphicon glyphicon-ban-circle',
     btnCancelClass: 'btn-danger',
 });
-// Initialize select2
+// Initialize remote user select2
 $('[data-toggle="remoteUserSelect2"]').select2({
     ajax: {
         data: function (params) {
@@ -34,6 +34,40 @@ $('[data-toggle="remoteUserSelect2"]').select2({
                 term: params.term, // search term
                 page: params.page,
                 notUsers: $(this).val()
+            };
+        },
+        dataType: 'json',
+        delay: 250,
+        processResults: function (data, params) {
+            // parse the results into the format expected by Select2
+            // since we are using custom formatting functions we do not need to
+            // alter the remote JSON data, except to indicate that infinite
+            // scrolling can be used
+            params.page = params.page || 1;
+            return {
+                results: $.map(data.data, function (item) {
+                    return {
+                        text: item.name,
+                        id: item.id
+                    }
+                }),
+                pagination: {
+                    more: (params.page * 30) < data.total
+                }
+            };
+        },
+        cache: true
+    },
+    minimumInputLength: 1,
+    allowClear: true,
+});
+// Initialize remote location select2
+$('[data-toggle="remoteLocationSelect2"]').select2({
+    ajax: {
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page,
             };
         },
         dataType: 'json',

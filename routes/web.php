@@ -42,8 +42,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::middleware(['role:root'])->resource('roles', 'Roles\RoleController');
 
     // Product Section
+    Route::middleware(['role:root'])
+        ->post('/products/{product}/labels', 'Products\ProductController@storeProductLabels')
+        ->name('products.productLabels.store');
     Route::middleware(['role:root'])->resource('products', 'Products\ProductController');
+
     // Location Section
+    Route::middleware(['role:root'])
+        ->get('/ajax/locations', 'Locations\LocationController@indexAjax')
+        ->name('locations.index.ajax');
     Route::middleware(['role:root'])->resource('locations', 'Locations\LocationController');
 
     // Permission section

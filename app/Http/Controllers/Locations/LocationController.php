@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Location;
 use Config;
 use Illuminate\Http\Request;
+use Response;
 use Session;
 
 class LocationController extends Controller
@@ -106,5 +107,20 @@ class LocationController extends Controller
         // Redirect and let the user know of the success
         Session::flash('success', 'Successfully deleted location "' . $location->name . '"');
         return redirect()->route('locations.index');
+    }
+
+    /**
+     * Get locations that match the term given
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function indexAjax(Request $request)
+    {
+        // Hardcoding 30 for pagination here as we are using endless scrolling on the other end
+        // in app.js
+        $locations = Location::where('name', 'like', '%' . $request->input('term') . '%')
+            ->orderBy('name')->paginate(30);
+        return Response::json($locations);
     }
 }
