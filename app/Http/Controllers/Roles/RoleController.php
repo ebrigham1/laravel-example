@@ -116,6 +116,7 @@ class RoleController extends Controller
      * Show the users added to this role
      *
      * @param Role $role
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function users(Role $role)
     {
@@ -169,6 +170,14 @@ class RoleController extends Controller
         return redirect()->route('roles.users', ['role' => $role]);
     }
 
+    /**
+     * Remove the user from the role
+     *
+     * @param Request $request
+     * @param Role $role
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroyRoleUser(Request $request, Role $role, User $user)
     {
         // Delete the role user

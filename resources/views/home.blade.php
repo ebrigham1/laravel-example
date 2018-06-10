@@ -14,6 +14,8 @@
             <div class="list-group">
                 @role('root')
                     <a class="list-group-item" href="{{ route('roles.index') }}">Roles</a>
+                    <a class="list-group-item" href="{{ route('products.index') }}">Products</a>
+                    <a class="list-group-item" href="{{ route('locations.index') }}">Locations</a>
                 @endrole
                 @role(['root', 'web_project_manager', 'web_developer'])
                     <a class="list-group-item" href="{{ route('webHome') }}">Web</a>

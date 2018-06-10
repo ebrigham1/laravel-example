@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Location extends LabelableModel
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name'];
+
+    /**
      * Products many to many relationship
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

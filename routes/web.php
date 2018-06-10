@@ -41,6 +41,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('roles.users');
     Route::middleware(['role:root'])->resource('roles', 'Roles\RoleController');
 
+    // Product Section
+    Route::middleware(['role:root'])->resource('products', 'Products\ProductController');
+    // Location Section
+    Route::middleware(['role:root'])->resource('locations', 'Locations\LocationController');
 
     // Permission section
     Route::group(
