@@ -45,6 +45,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::middleware(['role:root'])
         ->post('/products/{product}/labels', 'Products\ProductController@storeProductLabels')
         ->name('products.productLabels.store');
+    Route::middleware(['role:root'])->get('products/{product}/locations', 'Products\ProductController@locations')
+        ->name('products.locations');
     Route::middleware(['role:root'])->resource('products', 'Products\ProductController');
 
     // Location Section

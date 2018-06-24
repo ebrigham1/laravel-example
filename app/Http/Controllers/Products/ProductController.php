@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
+use App\Models\Location;
 use App\Models\Product;
 use Config;
 use Illuminate\Http\Request;
@@ -95,7 +96,7 @@ class ProductController extends Controller
     /**
      * Remove the specified product from storage.
      *
-     * @param Product $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
@@ -106,5 +107,41 @@ class ProductController extends Controller
         // Redirect and let the user know of the success
         Session::flash('success', 'Successfully deleted product "' . $product->name . '"');
         return redirect()->route('products.index');
+    }
+
+    /**
+     * Create labels for the given product
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeProductLabels(Request $request, Product $product)
+    {
+        // Validate the label creation
+        $this->validate($request, [
+            'number' => 'required|numeric|min:1|max:1000',
+            'location' => 'required|exists:locations,id'
+        ]);
+        $product->createLabels($request->input('number'), Location::find($request->input('location')));
+        // Redirect and let the user know of the success
+        Session::flash(
+            'success',
+            'Successfully created ' . $request->input('number') . ' label(s)'
+        );
+        return redirect()->route('products.show', ['product' => $product]);
+    }
+
+    /**
+     * Show locations for the given product
+     *
+     * @param \App\Models\Product $product
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function locations(Product $product)
+    {
+        $productLocations = $product->productLocations;
+        dump($productLocations);
+        return view('products.locations', compact('product', 'productLocations'));
     }
 }

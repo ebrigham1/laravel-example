@@ -19,11 +19,11 @@
                 <div class="form-group{{ $errors->has('users') ? ' has-error' : '' }}">
                     <label class="sr-only" for="users">Users</label>
                     <div class="input-group">
-                        <select tabindex="1" id="users" name="users[]" multiple="multiple" class="form-control" data-toggle="remoteUserSelect2" data-placeholder="Please type the name(s) of users you wish to add to this role" data-ajax--url="{{ route('roles.usersNotInRole.ajax', ['role' => $role]) }}" required style="width: 100%;">
+                        <select tabindex="1" id="users" name="users[]" multiple="multiple" class="form-control" data-toggle="remoteUserSelect2" data-placeholder="Please type the name(s) of users you wish to add to this role" data-ajax--url="{{ route('roles.usersNotInRole.ajax', ['role' => $role]) }}" required style="width: 96%;">
                         </select>
-                        <span class="input-group-btn">
+                        <div class="input-group-append">
                             <button tabindex="2" type="submit" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
-                        </span>
+                        </div>
                     </div>
                     @if ($errors->has('users'))
                         <span class="help-block">
@@ -36,12 +36,14 @@
                 <div class="list-group">
                     @foreach ($users as $user)
                         <div class="input-group">
-                            <a class="list-group-item" href="{{ route('users.show', ['user' => $user]) }}">
+                            <a class="list-group-item list-group-item-action" href="{{ route('users.show', ['user' => $user]) }}" style="width: 94%;">
                                 {{ $user->name }}
                             </a>
-                            <span class="input-group-btn">
-                                @include('shared.deleteButton', ['name' => 'user' . $user->id, 'route' => route('roles.users.destroy', ['role' => $role, 'user' => $user]), 'deleteIcon' => 'fa-user-times'])
-                            </span>
+                            <div class="input-group-append">
+                                <span class="input-group-btn">
+                                    @include('shared.deleteButton', ['size' => 'lg', 'name' => 'user' . $user->id, 'route' => route('roles.users.destroy', ['role' => $role, 'user' => $user]), 'deleteIcon' => 'fa-user-times'])
+                                </span>
+                            </div>
                         </div>
                     @endforeach
                 </div>

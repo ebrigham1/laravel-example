@@ -5,8 +5,8 @@
 
 header.header {
   background: $header-bg;
-  .navbar-brand {
-    height: 48px;
+  .navbar {
+    background: $header-bg;
   }
   .dropdown-menu {
     min-width: 100%;

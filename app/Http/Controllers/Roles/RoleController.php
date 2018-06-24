@@ -115,7 +115,7 @@ class RoleController extends Controller
     /**
      * Show the users added to this role
      *
-     * @param Role $role
+     * @param \App\Models\Role $role
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function users(Role $role)
@@ -127,8 +127,8 @@ class RoleController extends Controller
     /**
      * Get users not in a role that match the term given
      *
-     * @param Request $request
-     * @param Role $role
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Role $role
      * @return \Illuminate\Http\JsonResponse
      */
     public function usersNotInRoleAjax(Request $request, Role $role)
@@ -145,8 +145,8 @@ class RoleController extends Controller
     /**
      * Attach a user to a role
      *
-     * @param Request $request
-     * @param Role $role
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Role $role
      * @return \Illuminate\Http\RedirectResponse
      */
     public function storeRoleUsers(Request $request, Role $role)

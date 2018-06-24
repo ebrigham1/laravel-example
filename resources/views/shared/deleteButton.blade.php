@@ -1,4 +1,4 @@
-<button id="delete-{{ $name }}-button" class="btn btn-danger" data-form-id="delete-{{ $name }}-form"
+<button id="delete-{{ $name }}-button" class="btn{{ isset($size) ? '-' . $size : '' }} btn-danger" data-form-id="delete-{{ $name }}-form"
         data-toggle="deleteConfirmation" data-title="Are you sure you wish to delete this {{ $name }}?">
     @isset($deleteIcon)
         <i class="fa {{ $deleteIcon }}" aria-hidden="true"></i>

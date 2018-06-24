@@ -16,8 +16,8 @@
             @if ($products)
                 <div class="list-group">
                     @foreach ($products as $product)
-                        <a class="list-group-item" href="{{ route('products.show', ['product' => $product]) }}">
-                            <h4 class="list-group-item-heading no-desc' }}">{{ $product->name }}</h4>
+                        <a class="list-group-item list-group-item-action" href="{{ route('products.show', ['product' => $product]) }}">
+                            {{ $product->name }}
                         </a>
                     @endforeach
                 </div>

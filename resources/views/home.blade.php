@@ -13,23 +13,23 @@
             </div>
             <div class="list-group">
                 @role('root')
-                    <a class="list-group-item" href="{{ route('roles.index') }}">Roles</a>
-                    <a class="list-group-item" href="{{ route('products.index') }}">Products</a>
-                    <a class="list-group-item" href="{{ route('locations.index') }}">Locations</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('roles.index') }}">Roles</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('products.index') }}">Products</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('locations.index') }}">Locations</a>
                 @endrole
                 @role(['root', 'web_project_manager', 'web_developer'])
-                    <a class="list-group-item" href="{{ route('webHome') }}">Web</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('webHome') }}">Web</a>
                 @endrole
                 @role(['root', 'sales_manager', 'sales_associate'])
-                    <a class="list-group-item" href="{{ route('salesHome') }}">Sales</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('salesHome') }}">Sales</a>
                 @endrole
                 @role(['root', 'finance_manager', 'finance_associate'])
-                    <a class="list-group-item" href="{{ route('financeHome') }}">Finance</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('financeHome') }}">Finance</a>
                 @endrole
                 @role(['root', 'warehouse_manager', 'warehouse_associate'])
-                    <a class="list-group-item" href="{{ route('warehouseForm') }}">Warehouse</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('warehouseForm') }}">Warehouse</a>
                 @endrole
-                <a class="list-group-item" href="{{ route('mostRecentActivities') }}">Most Recent Activities</a>
+                <a class="list-group-item list-group-item-action" href="{{ route('mostRecentActivities') }}">Most Recent Activities</a>
             </div>
         </div>
     </div>

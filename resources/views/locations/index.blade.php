@@ -16,8 +16,8 @@
             @if ($locations)
                 <div class="list-group">
                     @foreach ($locations as $location)
-                        <a class="list-group-item" href="{{ route('locations.show', ['location' => $location]) }}">
-                            <h4 class="list-group-item-heading no-desc' }}">{{ $location->name }}</h4>
+                        <a class="list-group-item list-group-item-action" href="{{ route('locations.show', ['location' => $location]) }}">
+                            {{ $location->name }}
                         </a>
                     @endforeach
                 </div>

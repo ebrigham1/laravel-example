@@ -16,10 +16,10 @@
             @if ($roles)
                 <div class="list-group">
                     @foreach ($roles as $role)
-                        <a class="list-group-item" href="{{ route('roles.show', ['role' => $role]) }}">
+                        <a class="list-group-item list-group-item-action" href="{{ route('roles.show', ['role' => $role]) }}">
                             <h4 class="list-group-item-heading{{ $role->description ? '' : ' no-desc' }}">{{ $role->display_name }}</h4>
                             @if ($role->description)
-                                <p class="list-group-item-text">{{ $role->description }}</p>
+                                {{ $role->description }}
                             @endif
                         </a>
                     @endforeach

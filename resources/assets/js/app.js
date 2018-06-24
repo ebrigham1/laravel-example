@@ -105,3 +105,7 @@ $('[data-toggle="deleteConfirmation"]').click(function () {
     event.preventDefault();
     $('form#' + $(this).data('formId')).submit();
 });
+// Auto open modal form when necessary
+if ($('div#createLabelsModal[aria-hidden="false"]').length) {
+    $('div#createLabelsModal[aria-hidden="false"]').modal('show');
+}
