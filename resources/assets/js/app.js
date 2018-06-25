@@ -68,6 +68,7 @@ $('[data-toggle="remoteLocationSelect2"]').select2({
             return {
                 term: params.term, // search term
                 page: params.page,
+                notLocation: $(this).data('currentLocationId'),
             };
         },
         dataType: 'json',
@@ -109,3 +110,30 @@ $('[data-toggle="deleteConfirmation"]').click(function () {
 if ($('div#createLabelsModal[aria-hidden="false"]').length) {
     $('div#createLabelsModal[aria-hidden="false"]').modal('show');
 }
+// Ajax lables for a given product in a given location
+$('a.productLocation[data-loaded!="1"]').click(function () {
+    event.preventDefault();
+    // Only try to load once
+    $(this).off('click');
+    let element = $(this);
+    $.get($(this).data('ajaxUrl')).done(function (labels) {
+        let labelGroup = $('<div>', {
+            'class': 'list-group list-group-flush',
+            'style': 'display: none;',
+        });
+        $.each(labels, function (index, label) {
+           let labelItem = $('<a>', {
+               'class': 'list-group-item list-group-item-action',
+               'href': label.show_url,
+               'html': label.id
+           });
+           labelGroup.append(labelItem);
+        });
+        $('div#productLocation' + element.data('productId') + '-' + element.data('locationId')).html(labelGroup);
+        $('div#productLocation' + element.data('productId') + '-' + element.data('locationId')).removeClass('card-body');
+        labelGroup.slideDown();
+    }).fail(function () {
+        $('div#productLocation' + element.data('productId') + '-' + element.data('locationId')).html('<span style="color: #dc3545;">Api Endpoint Failure</span>');
+    });
+});
+

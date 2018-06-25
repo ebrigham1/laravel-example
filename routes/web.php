@@ -55,6 +55,20 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('locations.index.ajax');
     Route::middleware(['role:root'])->resource('locations', 'Locations\LocationController');
 
+    // Labels Section
+    Route::middleware(['role:root'])
+        ->get('/ajax/labels/{product}/{location}', 'Labels\LabelController@productLocationAjax')
+        ->name('labels.productLocation.ajax');
+    Route::middleware(['role:root'])
+        ->post('/labels/move/{label}', 'Labels\LabelController@move')
+        ->name('labels.move');
+    Route::middleware(['role:root'])
+        ->get('/labels/{label}', 'Labels\LabelController@show')
+        ->name('labels.show');
+    Route::middleware(['role:root'])
+        ->delete('/labels/{label}', 'Labels\LabelController@destroy')
+        ->name('labels.destroy');
+
     // Permission section
     Route::group(
         [

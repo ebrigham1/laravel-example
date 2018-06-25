@@ -17,7 +17,7 @@
                 <dt>Name:</dt>
                 <dd>{{ $product->name }}</dd>
             </dl>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#createLabelsModal">Create Labels</button>
+            <button id="createProductLabels" class="btn btn-primary" data-toggle="modal" data-target="#createLabelsModal">Create Labels</button>
             <br><br>
             <a class="btn btn-info" href="{{ route('products.locations', ['product'  => $product]) }}">Locations</a>
             <br><br>

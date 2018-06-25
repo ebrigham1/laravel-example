@@ -140,8 +140,7 @@ class ProductController extends Controller
      */
     public function locations(Product $product)
     {
-        $productLocations = $product->productLocations;
-        dump($productLocations);
+        $productLocations = $product->productLocations()->with('location')->get();
         return view('products.locations', compact('product', 'productLocations'));
     }
 }

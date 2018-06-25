@@ -112,14 +112,13 @@ class LocationController extends Controller
     /**
      * Get locations that match the term given
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function indexAjax(Request $request)
     {
-        // Hardcoding 30 for pagination here as we are using endless scrolling on the other end
-        // in app.js
-        $locations = Location::where('name', 'like', '%' . $request->input('term') . '%')
+        $locations = Location::where('id', '!=', $request->input('notLocation', ''))
+            ->where('name', 'like', '%' . $request->input('term') . '%')
             ->orderBy('name')->paginate(30);
         return Response::json($locations);
     }

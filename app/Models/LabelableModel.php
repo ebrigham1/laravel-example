@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Contracts\LabelableContract;
 use App\Contracts\LabelableWithLocationContract;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -29,11 +30,14 @@ abstract class LabelableModel extends Model implements LabelableContract
     public function createLabels(int $number = 1, Location $location = null): void
     {
         $labels = [];
+        $date = Carbon::now();
         for ($i = 0; $i < $number; $i++) {
             // Set up every key since we are using insert instead of createMany
             $label = [
                 'labelable_id' => $this->id,
                 'labelable_type' => $this->labels()->getMorphClass(),
+                'created_at' => $date,
+                'updated_at' => $date,
             ];
             // If this location was passed in and this labelable uses the LabelableWithLocationContract
             // additionally set the location_id key on this label
@@ -47,5 +51,15 @@ abstract class LabelableModel extends Model implements LabelableContract
         if ($this instanceof LabelableWithLocationContract) {
             $this->increaseLocationQuantity($location->id, $number);
         }
+    }
+
+    /**
+     * Get the name of this labelable model
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

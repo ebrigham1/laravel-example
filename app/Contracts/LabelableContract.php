@@ -22,4 +22,11 @@ interface LabelableContract
      * @return void
      */
     public function createLabels(int $number = 1, Location $location = null): void;
+
+    /**
+     * Get the name of this labelable
+     *
+     * @return string
+     */
+    public function getName(): string;
 }
