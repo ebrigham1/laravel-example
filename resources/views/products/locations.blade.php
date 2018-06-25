@@ -15,7 +15,7 @@
                 <h1>Locations for product: <small>{{ $product->name }}</small></h1>
             </div>
             <br>
-            @if ($productLocations)
+            @if ($productLocations->isNotEmpty())
                 @foreach ($productLocations as $productLocation)
                     <div class="card">
                         <a href="#" data-ajax-url="{{ route('labels.productLocation.ajax', ['product' => $productLocation->product, 'location' => $productLocation->location]) }}" data-product-id="{{ $productLocation->product_id }}" data-location-id="{{ $productLocation->location_id }}" class="productLocation list-group-item-action" data-toggle="collapse" data-target="#collapse{{ $loop->index }}" aria-expanded="false" aria-controls="collapse{{ $loop->index }}">
@@ -32,7 +32,7 @@
                     </div>
                 @endforeach
             @else
-                No Location Found
+                No Locations Found
             @endif
         </div>
     </div>
