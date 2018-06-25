@@ -53,6 +53,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::middleware(['role:root'])
         ->get('/ajax/locations', 'Locations\LocationController@indexAjax')
         ->name('locations.index.ajax');
+    Route::middleware(['role:root'])
+        ->get('/locations/print/{location}', 'Locations\LocationController@print')
+        ->name('locations.print');
     Route::middleware(['role:root'])->resource('locations', 'Locations\LocationController');
 
     // Labels Section

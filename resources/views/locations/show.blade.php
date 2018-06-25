@@ -17,7 +17,7 @@
                 <dt>Name:</dt>
                 <dd>{{ $location->name }}</dd>
             </dl>
-            <br><br>
+            <a class="btn btn-primary" href="{{ route('locations.print', ['location' => $location]) }}">Print</a><br><br>
             <a class="btn btn-primary" href="{{ route('locations.edit', ['location' => $location]) }}">Edit</a>
             @include('shared.deleteButton', ['name' => 'location', 'route' => route('locations.destroy', ['location' => $location])])
         </div>

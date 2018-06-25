@@ -11,7 +11,7 @@ cp codesniffer/config-pre-commit .git/hooks/config-pre-commit
 # Make sure composer is completely up to date
 sudo composer self-update
 sudo apt update
-yes | sudo apt install php7.2-ldap
+#yes | sudo apt install php7.2-ldap
 yes | sudo apt install htop
 yes | sudo apt autoremove
 composer install

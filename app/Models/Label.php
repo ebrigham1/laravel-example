@@ -61,4 +61,15 @@ class Label extends Model
     {
         return $this->labelable->getName();
     }
+
+    /**
+     * Print this label
+     *
+     * @return bool
+     */
+    public function print(): bool
+    {
+        // Call connectship api class in here passing things like $this->name $this->id ect
+        return true;
+    }
 }

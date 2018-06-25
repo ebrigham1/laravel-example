@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Locations;
 
 use App\Http\Controllers\Controller;
+use App\Models\Label;
 use App\Models\Location;
 use Config;
 use Illuminate\Http\Request;
@@ -121,5 +122,26 @@ class LocationController extends Controller
             ->where('name', 'like', '%' . $request->input('term') . '%')
             ->orderBy('name')->paginate(30);
         return Response::json($locations);
+    }
+
+    /**
+     * Remove the specified location from storage.
+     *
+     * @param Location $location
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function print(Location $location)
+    {
+        $label = $location->labels()->first();
+        if (!$label instanceof Label) {
+            $label = $location->labels()->create();
+        }
+        if ($label->print()) {
+            Session::flash('success', 'Successfully printed location label');
+        } else {
+            Session::flash('error', 'Error printing location label');
+        }
+        return redirect()->route('locations.show', ['location' => $location]);
     }
 }

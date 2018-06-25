@@ -36,7 +36,7 @@ class Location extends LabelableModel
     }
 
     /**
-     * Get the labelableLabelsproduct labels associated with this location
+     * Get the product labels associated with this location
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
