@@ -5,10 +5,10 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <ol class="breadcrumb">
-                <li><a href="{{ route('home') }}">Home</a></li>
-                <li class="active">Switch User</li>
-            </ol>
+            @breadcrumbs
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Switch User</li>
+            @endbreadcrumbs
             <div class="page-header">
                 <h1>Switch User</h1>
             </div>

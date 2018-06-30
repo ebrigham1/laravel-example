@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Contracts\ActivityLogEventContract;
+use App\Events\ActivityLogEvent;
 
 /**
  * Class ActivityLogEventListener handles all events that should generate
@@ -15,10 +15,10 @@ class ActivityLogEventListener
     /**
      * Handle an activity log event
      *
-     * @param \App\Contracts\ActivityLogEventContract $event
+     * @param \App\Events\ActivityLogEvent $event
      * @return void
      */
-    public function handle(ActivityLogEventContract $event)
+    public function handle(ActivityLogEvent $event)
     {
         // Get the user that created did the activity
         $user = $event->getUser();

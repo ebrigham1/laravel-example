@@ -1,12 +1,11 @@
 /**
  * Handles activity log dom elements
  */
-class ActivityLogFactory
-{
+class ActivityLogFactory {
     /**
      * Create an activity log dom element
      *
-     * @param {HTMLElement} element
+     * @param {jQuery} element
      * @param {string} userName
      * @param {string} createdAt
      * @param {string} description
@@ -21,7 +20,7 @@ class ActivityLogFactory
     /**
      * Create an activity log dom element
      *
-     * @param {HTMLElement} element
+     * @param {jQuery} element
      * @param {string} userName
      * @param {string} createdAt
      * @param {string} description
@@ -40,46 +39,58 @@ class ActivityLogFactory
      * @param {string} userName
      * @param {string} createdAt
      * @param {string} description
-     * @param {bool} hide
-     * @returns {HTMLElement}
+     * @param {boolean} hide
+     * @returns {jQuery}
      */
-    static createContainer(userName, createdAt, description, hide = true)
-    {
+    static createContainer(userName, createdAt, description, hide = true) {
         let element = $("<div>", {
             'class': 'list-group-item',
         });
         if (hide) {
-           element.css('display', 'none');
+            element.css('display', 'none');
         }
-        return element.append(this.createHeading(userName, createdAt))
+        return element.append(this.createHeadingContainer(userName, createdAt))
             .append(this.createDescription(description));
+    }
+
+    /**
+     * Create an activity log heading container
+     *
+     * @param {string} userName
+     * @param {string} createdAt
+     * @returns {jQuery}
+     */
+    static createHeadingContainer(userName, createdAt)
+    {
+        return $('<div>', {
+            'class': 'd-flex w-100 justify-content-between',
+        }).append(this.createHeading(userName, createdAt)).append(this.createDate(createdAt));
     }
 
     /**
      * Create an activity log heading element
      *
      * @param {string} userName
-     * @param {string} createdAt
-     * @returns {HTMLElement}
+     * @returns {jQuery}
      */
-    static createHeading(userName, createdAt)
+    static createHeading(userName)
     {
         return $('<h4>', {
-            'class': 'list-group-item-heading',
+            'class': 'mb-1',
             'text': userName
-        }).append(this.createDate(createdAt));
+        });
     }
 
     /**
      * Create an activity log date element
      *
      * @param {string} createdAt
-     * @returns {HTMLElement}
+     * @returns {jQuery}
      */
     static createDate(createdAt)
     {
         return $('<span>', {
-            'class': 'list-group-item-date',
+            'class': 'text-muted',
             'text': createdAt
         });
     }
@@ -88,12 +99,12 @@ class ActivityLogFactory
      * Create an activity log description element
      *
      * @param {string} description
-     * @returns {HTMLElement}
+     * @returns {jQuery}
      */
     static createDescription(description)
     {
         return $('<p/>', {
-            'class': 'list-group-item-text',
+            'class': 'mb-1',
             'text': description
         });
     }

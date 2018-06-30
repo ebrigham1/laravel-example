@@ -19,8 +19,8 @@
 	"port": "6001",
 	"protocol": "https",
 	"socketio": {},
-	"sslCertPath": "/etc/nginx/ssl/laravel.app.crt",
-	"sslKeyPath": "/etc/nginx/ssl/laravel.app.key",
+	"sslCertPath": "/etc/nginx/ssl/laravel.test.crt",
+	"sslKeyPath": "/etc/nginx/ssl/laravel.test.key",
 	"sslCertChainPath": "",
 	"sslPassphrase": "",
 	"apiOriginAllow": {

@@ -2,40 +2,32 @@
 
 namespace App\Events;
 
-use App\Contracts\ActivityLogEventContract;
-use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class UserDetachedFromRole implements ActivityLogEventContract
+class ActivityLogEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private $user;
-    private $detachedUser;
-    private $role;
-    private $description;
+    protected $user;
+    protected $description;
 
     /**
      * Create a new event instance.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Role $role
+     * @param string $description
      * @return void
      */
-    public function __construct(User $user, User $detachedUser, Role $role)
+    public function __construct(User $user, string $description)
     {
         $this->user = $user;
-        $this->detachedUser = $detachedUser;
-        $this->role = $role;
-        $this->description = "User '"
-            . $this->detachedUser->name
-            . "' detached from role '"
-            . $this->role->display_name . "'.";
+        $this->description = $description;
     }
 
     /**

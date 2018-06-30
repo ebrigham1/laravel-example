@@ -15,8 +15,11 @@
             <div data-last-page-index="{{ $activityLogs->lastPage() }}" data-has-more-pages="{{ $activityLogs->hasMorePages() }}" data-last-page="" data-base-ajax-url="{{ route('mostRecentActivitiesAjax') }}" id="activityLogs" class="list-group">
                 @foreach ($activityLogs as $activityLog)
                     <div class="list-group-item">
-                        <h4 class="list-group-item-heading">{{ $activityLog->user->name }}<span class="list-group-item-date">{{ $activityLog->created_at->diffForHumans() }}</span></h4>
-                        <p class="list-group-item-text">{{ $activityLog->description }}</p>
+                        <div class="d-flex w-100 justify-content-between">
+                            <h4 class="mb-1">{{ $activityLog->user->name }}</h4>
+                            <span class="text-muted">{{ $activityLog->created_at->diffForHumans() }}</span>
+                        </div>
+                        <p class="mb-1">{{ $activityLog->description }}</p>
                     </div>
                 @endforeach
             </div>

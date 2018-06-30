@@ -22,4 +22,4 @@ vagrant up
 While that is running modify your hosts file adding the proper ipaddress and hostename from your 
 Homestead.yaml file (192.168.10.10 laravel.test).
 
-Once homestead has booted you should be able to access it locally by navigating to laravel.app.
+Once homestead has booted you should be able to access it locally by navigating to laravel.test.
