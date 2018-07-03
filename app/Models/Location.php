@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -12,7 +13,17 @@ class Location extends LabelableModel
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'section_id'];
+
+    /**
+     * Section belongs to relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function section(): BelongsTo
+    {
+        return $this->belongsTo(Section::class);
+    }
 
     /**
      * Products many to many relationship
@@ -48,13 +59,13 @@ class Location extends LabelableModel
     /**
      * Get the quantity of the given product at this location
      *
-     * @param \App\Models\Product $product
+     * @param int $productId
      * @return int
      */
-    public function getProductQuantity(Product $product): int
+    public function getProductQuantity($productId): int
     {
-        if ($this->hasProduct($product)) {
-            return $this->products()->where('product_id', $product->id)->first()->product_location->quantity;
+        if ($this->hasProduct($productId)) {
+            return $this->products()->where('product_id', $productId)->first()->product_location->quantity;
         } else {
             return 0;
         }
@@ -63,71 +74,11 @@ class Location extends LabelableModel
     /**
      * Check if this location has the given product
      *
-     * @param \App\Models\Product $product
+     * @param int $productId
      * @return bool
      */
-    public function hasProduct(Product $product): bool
+    public function hasProduct($productId): bool
     {
-        return $this->productLocations()->where('product_id', $product->id)->exists();
-    }
-
-    /**
-     * Increment the quantity of the given product at this location
-     *
-     * @param \App\Models\Product $product
-     * @return void
-     */
-    public function incrementProductQuantity(Product $product): void
-    {
-        $this->increaseProductQuantity($product, 1);
-    }
-
-    /**
-     * Decrement the quantity of the given product at this location
-     *
-     * @param \App\Models\Product $product
-     * @return void
-     */
-    public function decrementProductQuantity(Product $product): void
-    {
-        $this->decreaseProductQuantity($product, 1);
-    }
-
-    /**
-     * Increase the quantity of the given product at this location
-     *
-     * @param \App\Models\Product $product
-     * @param int $number
-     * @return void
-     */
-    public function increaseProductQuantity(Product $product, int $number = 1): void
-    {
-        if ($this->hasProduct($product)) {
-            $productLocation = $this->productLocations()->where('product_id', $product->id)->first();
-            $productLocation->quantity += $number;
-            $productLocation->save();
-        } else {
-            $this->products()->attach($product->id, ['quantity' => $number]);
-        }
-    }
-
-    /**
-     * Decrease the quantity of the given product at this location
-     *
-     * @param \App\Models\Product $product
-     * @param int $number
-     * @return void
-     */
-    public function decreaseProductQuantity(Product $product, int $number = 1): void
-    {
-        if ($this->hasProduct($product)) {
-            $productLocation = $this->productLocations()->where('product_id', $product->id)->first();
-            if ($productLocation->quantity <= 1) {
-                $this->products()->detach($product->id);
-            } else {
-                $productLocation->quantity -= $number;
-                $productLocation->save();
-            }
-        }
+        return $this->productLocations()->where('product_id', $productId)->exists();
     }
 }

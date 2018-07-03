@@ -1,35 +1,36 @@
 /**
  * Handles activity log dom elements
  */
-class ActivityLogFactory {
+class ActivityLogFactory
+{
     /**
      * Create an activity log dom element
      *
-     * @param {jQuery} element
+     * @param {jQuery} container
      * @param {string} userName
      * @param {string} createdAt
      * @param {string} description
      * @returns {void}
      */
-    static createAndAppend(element, userName, createdAt, description) {
+    static createAndAppend(container, userName, createdAt, description) {
         let activityLog = this.createContainer(userName, createdAt, description, false);
         // Append the new activity to the logs
-        element.append(activityLog);
+        container.append(activityLog);
     }
 
     /**
      * Create an activity log dom element
      *
-     * @param {jQuery} element
+     * @param {jQuery} container
      * @param {string} userName
      * @param {string} createdAt
      * @param {string} description
      * @returns {void}
      */
-    static createAndPrepend(element, userName, createdAt, description) {
+    static createAndPrepend(container, userName, createdAt, description) {
         let activityLog = this.createContainer(userName, createdAt, description);
         // Prepend the new activity to the logs
-        element.prepend(activityLog);
+        container.prepend(activityLog);
         activityLog.slideDown(500);
     }
 

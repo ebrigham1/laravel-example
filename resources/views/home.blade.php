@@ -15,6 +15,8 @@
                 @role('root')
                     <a class="list-group-item list-group-item-action" href="{{ route('roles.index') }}">Roles</a>
                     <a class="list-group-item list-group-item-action" href="{{ route('products.index') }}">Products</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('warehouses.index') }}">Warehouses</a>
+                    <a class="list-group-item list-group-item-action" href="{{ route('sections.index') }}">Sections</a>
                     <a class="list-group-item list-group-item-action" href="{{ route('locations.index') }}">Locations</a>
                 @endrole
                 @role(['root', 'web_project_manager', 'web_developer'])
@@ -25,9 +27,6 @@
                 @endrole
                 @role(['root', 'finance_manager', 'finance_associate'])
                     <a class="list-group-item list-group-item-action" href="{{ route('financeHome') }}">Finance</a>
-                @endrole
-                @role(['root', 'warehouse_manager', 'warehouse_associate'])
-                    <a class="list-group-item list-group-item-action" href="{{ route('warehouseForm') }}">Warehouse</a>
                 @endrole
                 <a class="list-group-item list-group-item-action" href="{{ route('mostRecentActivities') }}">Most Recent Activities</a>
             </div>

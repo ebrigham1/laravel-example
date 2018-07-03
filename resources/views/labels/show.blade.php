@@ -37,7 +37,7 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="location" class="col-form-label{{ $errors->has('location') ? ' text-danger' : '' }}" data-toggle="tooltip" data-placement="left" title="Location where the labels will be created">*Location:</label>
-                                    <select id="location" data-current-location-id="{{ $label->location->id }}" name="location" class="form-control{{ $errors->has('location') ? ' is-invalid' : '' }}" data-toggle="remoteLocationSelect2" data-placeholder="Please type the name of the location" data-ajax--url="{{ route('locations.index.ajax') }}" required style="width: 100%;">
+                                    <select id="location" data-current-location-id="{{ $label->location_id }}" name="location" class="form-control{{ $errors->has('location') ? ' is-invalid' : '' }}" data-toggle="remoteLocationSelect2" data-placeholder="Please type the name of the location" data-ajax--url="{{ route('locations.index.ajax') }}" required style="width: 100%;">
                                     </select>
                                     @if ($errors->has('location'))
                                         <div class="invalid-feedback">

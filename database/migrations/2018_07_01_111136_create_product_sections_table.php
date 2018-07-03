@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLocationsTable extends Migration
+class CreateProductSectionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateLocationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('product_sections', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->index();
-            $table->unsignedInteger('section_id')->index()->nullable();
+            $table->unsignedInteger('product_id');
+            $table->unsignedInteger('section_id');
+            $table->unique(['product_id', 'section_id']);
+            $table->unsignedInteger('quantity')->default(0);
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('section_id')->references('id')->on('sections')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
@@ -29,6 +32,6 @@ class CreateLocationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('product_sections');
     }
 }

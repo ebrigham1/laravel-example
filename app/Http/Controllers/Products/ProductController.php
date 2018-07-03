@@ -140,7 +140,12 @@ class ProductController extends Controller
      */
     public function locations(Product $product)
     {
+        $productWarehouses = $product->productWarehouses()->with('warehouse')->get();
+        $productSections = $product->productSections()->with('section')->get();
         $productLocations = $product->productLocations()->with('location')->get();
-        return view('products.locations', compact('product', 'productLocations'));
+        return view(
+            'products.locations',
+            compact('product', 'productWarehouses', 'productSections', 'productLocations')
+        );
     }
 }

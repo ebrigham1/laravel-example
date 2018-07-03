@@ -96,6 +96,76 @@ $('[data-toggle="remoteLocationSelect2"]').select2({
     minimumInputLength: 1,
     allowClear: true,
 });
+// Initialize remote section select2
+$('[data-toggle="remoteSectionSelect2"]').select2({
+    ajax: {
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page,
+                notSection: $(this).data('currentSectionId'),
+            };
+        },
+        dataType: 'json',
+        delay: 250,
+        processResults: function (data, params) {
+            // parse the results into the format expected by Select2
+            // since we are using custom formatting functions we do not need to
+            // alter the remote JSON data, except to indicate that infinite
+            // scrolling can be used
+            params.page = params.page || 1;
+            return {
+                results: $.map(data.data, function (item) {
+                    return {
+                        text: item.name,
+                        id: item.id
+                    }
+                }),
+                pagination: {
+                    more: (params.page * 30) < data.total
+                }
+            };
+        },
+        cache: true
+    },
+    minimumInputLength: 1,
+    allowClear: true,
+});
+// Initialize remote warehouse select2
+$('[data-toggle="remoteWarehouseSelect2"]').select2({
+    ajax: {
+        data: function (params) {
+            return {
+                term: params.term, // search term
+                page: params.page,
+                notWarehouse: $(this).data('currentWarehouseId'),
+            };
+        },
+        dataType: 'json',
+        delay: 250,
+        processResults: function (data, params) {
+            // parse the results into the format expected by Select2
+            // since we are using custom formatting functions we do not need to
+            // alter the remote JSON data, except to indicate that infinite
+            // scrolling can be used
+            params.page = params.page || 1;
+            return {
+                results: $.map(data.data, function (item) {
+                    return {
+                        text: item.name,
+                        id: item.id
+                    }
+                }),
+                pagination: {
+                    more: (params.page * 30) < data.total
+                }
+            };
+        },
+        cache: true
+    },
+    minimumInputLength: 1,
+    allowClear: true,
+});
 // Login form
 $('a#logout-link').click(function () {
     event.preventDefault();
@@ -111,7 +181,7 @@ if ($('div#createLabelsModal[aria-hidden="false"]').length) {
     $('div#createLabelsModal[aria-hidden="false"]').modal('show');
 }
 // Ajax lables for a given product in a given location
-$('a.productLocation[data-loaded!="1"]').click(function () {
+$('a.productLocation, a.subProductLocation').click(function () {
     event.preventDefault();
     // Only try to load once
     $(this).off('click');
@@ -122,12 +192,17 @@ $('a.productLocation[data-loaded!="1"]').click(function () {
             'style': 'display: none;',
         });
         $.each(labels, function (index, label) {
-           let labelItem = $('<a>', {
-               'class': 'list-group-item list-group-item-action',
-               'href': label.show_url,
-               'html': label.id
-           });
-           labelGroup.append(labelItem);
+            if (element.hasClass('subProductLocation')) {
+                var extraClass = 'subLabel ';
+            } else {
+                var extraClass = '';
+            }
+            let labelItem = $('<a>', {
+                'class': extraClass + 'list-group-item list-group-item-action',
+                'href': label.show_url,
+                'html': label.id
+            });
+            labelGroup.append(labelItem);
         });
         $('div#productLocation' + element.data('productId') + '-' + element.data('locationId')).html(labelGroup);
         $('div#productLocation' + element.data('productId') + '-' + element.data('locationId')).removeClass('card-body');

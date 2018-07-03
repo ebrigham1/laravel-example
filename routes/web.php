@@ -58,6 +58,31 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('locations.print');
     Route::middleware(['role:root'])->resource('locations', 'Locations\LocationController');
 
+    // Section Section
+    Route::middleware(['role:root'])
+        ->get('/ajax/sections/{product}/{warehouse}', 'Sections\SectionController@productSectionAjax')
+        ->name('sections.productSectionForProductAndWarehouse.ajax');
+    Route::middleware(['role:root'])
+        ->get('/ajax/sections', 'Sections\SectionController@indexAjax')
+        ->name('sections.index.ajax');
+    Route::middleware(['role:root'])
+        ->get('/sections/print/{section}', 'Sections\SectionsController@print')
+        ->name('sections.print');
+    Route::middleware(['role:root'])->get('sections/{section}/locations', 'Sections\SectionController@locations')
+        ->name('sections.locations');
+    Route::middleware(['role:root'])->resource('sections', 'Sections\SectionController');
+
+    // Warehouse Section
+    Route::middleware(['role:root'])
+        ->get('/ajax/warehouses', 'Warehouses\WarehouseController@indexAjax')
+        ->name('warehouses.index.ajax');
+    Route::middleware(['role:root'])
+        ->get('/warehouses/print/{warehouse}', 'Warehouses\WarehouseController@print')
+        ->name('warehouses.print');
+    Route::middleware(['role:root'])->get('warehouses/{warehouse}/sections', 'Warehouses\WarehouseController@sections')
+        ->name('warehouses.sections');
+    Route::middleware(['role:root'])->resource('warehouses', 'Warehouses\WarehouseController');
+
     // Labels Section
     Route::middleware(['role:root'])
         ->get('/ajax/labels/{product}/{location}', 'Labels\LabelController@productLocationAjax')
@@ -137,19 +162,6 @@ Route::group(['middleware' => 'auth'], function () {
             Route::middleware(['role:root|finance_manager'])
                 ->get('/ledger', 'LedgerController@index')
                 ->name('ledger');
-        }
-    );
-
-    // Warehouse section prefixed by /warehouse controllers in /Warehouse
-    Route::group(
-        [
-            'middleware' => 'role:root|warehouse_manager|warehouse_associate',
-            'prefix' => 'warehouse',
-            'namespace' => 'Warehouse'
-        ],
-        function () {
-            Route::get('/form', 'WarehouseController@form')->name('warehouseForm');
-            Route::post('/form', 'WarehouseController@formSubmit')->name('warehouseFormSubmit');
         }
     );
 });

@@ -50,6 +50,10 @@ abstract class LabelableModel extends Model implements LabelableContract
         $this->labels()->insert($labels);
         if ($this instanceof LabelableWithLocationContract) {
             $this->increaseLocationQuantity($location->id, $number);
+            if ($location->section instanceof Section) {
+                $this->increaseSectionQuantity($location->section_id, $number);
+                $this->increaseWarehouseQuantity($location->section->warehouse_id, $number);
+            }
         }
     }
 

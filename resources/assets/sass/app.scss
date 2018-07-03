@@ -67,6 +67,18 @@ span.list-group-item-date {
 select.form-control[multiple]:not(.select2-hidden-accessible) {
   height: 38px;
 }
+a.subProductSection {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+a.subProductLocation {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+a.subLabel {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
 /* Start loader ellipsis */
 .loader-ellips {
   font-size: 20px; /* change size here */

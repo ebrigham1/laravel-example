@@ -14,6 +14,12 @@
                 <h1>Show Location <small>{{ $location->name }}</small></h1>
             </div>
             <dl class="dl-horizontal">
+                @if ($location->section instanceof \App\Models\Section)
+                    <dt>Warehouse:</dt>
+                    <dd>{{ $location->section->warehouse->name }}</dd>
+                    <dt>Section:</dt>
+                    <dd>{{ $location->section->name }}</dd>
+                @endif
                 <dt>Name:</dt>
                 <dd>{{ $location->name }}</dd>
             </dl>

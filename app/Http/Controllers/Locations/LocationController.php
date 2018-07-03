@@ -44,6 +44,7 @@ class LocationController extends Controller
         // Validate the new location
         $this->validate($request, [
             'name' => 'required|unique:locations|max:255',
+            'section_id' => 'nullable|exists:sections,id',
         ]);
         // Store the new location
         $location = Location::create($request->all());
@@ -86,6 +87,7 @@ class LocationController extends Controller
         // Validate the new location
         $this->validate($request, [
             'name' => 'required|unique:locations,name,' . $location->id,
+            'section_id' => 'nullable|exists:sections,id',
         ]);
         // Update the location
         $location->update($request->all());
@@ -125,7 +127,7 @@ class LocationController extends Controller
     }
 
     /**
-     * Remove the specified location from storage.
+     * Print a label for the specified location.
      *
      * @param Location $location
      * @return \Illuminate\Http\RedirectResponse
