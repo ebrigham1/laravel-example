@@ -32,7 +32,7 @@
                     @endif
                 </div>
             </form><br>
-            @if ($users->isNotEmtpy())
+            @if ($users->isNotEmpty())
                 <div class="list-group">
                     @foreach ($users as $user)
                         <div class="input-group">
