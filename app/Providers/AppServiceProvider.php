@@ -6,6 +6,7 @@ use App\Models\Label;
 use App\Models\Location;
 use App\Models\Product;
 use App\Models\Section;
+use App\Models\Warehouse;
 use App\Observers\LabelObserver;
 use App\Observers\LocationObserver;
 use App\Observers\SectionObserver;
@@ -30,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'location' => Location::class,
             'product' => Product::class,
+            'section' => Section::class,
+            'warehouse' => Warehouse::class,
         ]);
         // Register blade component to handle breadcrumbs
         Blade::component('components.breadcrumbs', 'breadcrumbs');
