@@ -1,7 +1,7 @@
 /**
  * First we will load all of this project's JavaScript dependencies which
- * includes React and other helpers. It's a great starting point while
- * building robust, powerful web applications using React + Laravel.
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
  */
 
 require('./bootstrap');
@@ -211,4 +211,3 @@ $('a.productLocation, a.subProductLocation').click(function () {
         $('div#productLocation' + element.data('productId') + '-' + element.data('locationId')).html('<span style="color: #dc3545;">Api Endpoint Failure</span>');
     });
 });
-

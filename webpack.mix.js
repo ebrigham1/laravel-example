@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -16,7 +16,7 @@ mix.autoload({
     'jquery': ['window.jQuery', 'jQuery', '$']
 });
 
-mix.react('resources/assets/js/app.js', 'public/js')
+mix.react('resources/js/app.js', 'public/js')
     .extract(
         [
             'axios',
@@ -32,8 +32,8 @@ mix.react('resources/assets/js/app.js', 'public/js')
             'infinite-scroll/js'
         ]
     )
-    .react('resources/assets/js/activityLog.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css');
+    .react('resources/js/activityLog.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css');
 
 if (mix.config.inProduction) {
     mix.version();
