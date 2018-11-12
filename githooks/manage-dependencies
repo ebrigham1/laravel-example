@@ -1,0 +1,45 @@
+#!/bin/bash
+
+GIT_DIR=$(git rev-parse --git-dir)
+GIT_DIR_MERGE="$GIT_DIR"/rebase-merge
+GIT_DIR_APPLY="$GIT_DIR"/rebase-apply
+
+GIT_MERGE_REBASE=false
+[[ (-d "$GIT_DIR_MERGE" && -f "$GIT_DIR_MERGE/interactive") || -d "$GIT_DIR_APPLY" ]] && GIT_MERGE_REBASE=true
+
+changedFiles="$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD)"
+
+NOCOLOR='\e[0m'
+REDCOLOR='\e[37;41m'
+
+COMPOSER=
+if [ -f composer.phar ]; then
+    COMPOSER="php composer.phar"
+fi
+
+which composer > /dev/null 2>&1
+if [ $? ]; then
+    COMPOSER="composer"
+fi
+
+NPM=
+which npm > /dev/null 2>&1
+if [ $? ]; then
+    NPM="npmcomposer"
+fi
+
+runOnChange() {
+	echo "$changedFiles" | grep -q "$1" && eval "$2"
+}
+
+if [[ $GIT_MERGE_REBASE = false && -n "$COMPOSER" ]]; then
+    runOnChange composer.lock "$COMPOSER install"
+else
+    runOnChange composer.lock "echo -e '$REDCOLOR composer.lock has changed: run composer install when ready $NOCOLOR'"
+fi
+
+if [[ $GIT_MERGE_REBASE = false && -n "$COMPOSER" ]]; then
+    runOnChange package-lock.json "$NPM install"
+else
+    runOnChange package-lock.json "echo -e '$REDCOLOR package-lock.json has changed: run npm install when ready $NOCOLOR'"
+fi

@@ -6,8 +6,12 @@
 
 cd /home/vagrant/code
 # Set up the code style checking pre-commit hook
-cp codesniffer/pre-commit .git/hooks/pre-commit
-cp codesniffer/config-pre-commit .git/hooks/config-pre-commit
+cp githooks/pre-commit .git/hooks/pre-commit
+cp githooks/config-pre-commit .git/hooks/config-pre-commit
+# Set up post-merge and post-checkout hooks to manage composer and npm dependencies
+cp githooks/config-pre-commit .git/hooks/manage-dependencies
+cp githooks/post-checkout .git/hooks/post-checkout
+cp githooks/post-merge .git/hooks/post-merge
 # Make sure composer is completely up to date
 sudo composer self-update
 sudo apt update
