@@ -28,6 +28,7 @@
                 @role(['root', 'finance_manager', 'finance_associate'])
                     <a class="list-group-item list-group-item-action" href="{{ route('financeHome') }}">Finance</a>
                 @endrole
+                <a class="list-group-item list-group-item-action" href="{{ route('queueExample') }}">Queue Example</a>
                 <a class="list-group-item list-group-item-action" href="{{ route('mostRecentActivities') }}">Most Recent Activities</a>
             </div>
         </div>

@@ -23,6 +23,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/contact', 'ContactController@index')->name('contact');
     Route::get('/about', 'AboutController@index')->name('about');
     Route::get('/most_recent_activities', 'ActivityLogController@mostRecent')->name('mostRecentActivities');
+    Route::get('/queue_example', 'QueueExampleController@index')->name('queueExample');
+    Route::get('/queue_example/without_queue', 'QueueExampleController@withoutQueue')->name('queueExampleWithoutQueue');
+    Route::get('/queue_example/with_queue', 'QueueExampleController@withQueue')->name('queueExampleWithQueue');
+
     Route::get('/ajax/most_recent_activities', 'ActivityLogController@mostRecentAjax')
         ->name('mostRecentActivitiesAjax');
 
