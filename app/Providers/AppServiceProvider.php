@@ -13,6 +13,7 @@ use App\Observers\SectionObserver;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Telescope\TelescopeServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if (!$this->app->environment(['testing'])) {
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 }

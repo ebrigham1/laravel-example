@@ -6,15 +6,18 @@
 #
 # see the README
 
-PHPCS_BIN=$(dirname $0)/../../vendor/bin/phpcs
-PHPCS_CODING_STANDARD=PSR2
-PHPCS_IGNORE=vendor
 TMP_STAGING=".tmp_staging"
 
 # parse config
 CONFIG_FILE=$(dirname $0)/config-pre-commit
 if [ -e $CONFIG_FILE ]; then
     . $CONFIG_FILE
+fi
+
+# simple check if phpunit is set up correctly
+if [ ! -x $PHPCS_BIN ]; then
+    echo "PHPUnit bin not found or executable -> $PHPUNIT_BIN"
+    exit 1
 fi
 
 # simple check if code sniffer is set up correctly
@@ -57,7 +60,6 @@ if [ "$FILES_TO_CHECK" == "" ]; then
     exit 0
 fi
 
-# execute the code sniffer
 if [ "$PHPCS_IGNORE" != "" ]; then
     IGNORE="--ignore=$PHPCS_IGNORE"
 else
@@ -82,15 +84,40 @@ else
     IGNORE_WARNINGS=""
 fi
 
-OUTPUT=$($PHPCS_BIN -p $IGNORE_WARNINGS --standard=$PHPCS_CODING_STANDARD $ENCODING $IGNORE $SNIFFS $FILES_TO_CHECK)
-RETVAL=$?
+# execute the code sniffer
+OUTPUTPHPCS=$($PHPCS_BIN -p $IGNORE_WARNINGS --standard=$PHPCS_CODING_STANDARD $ENCODING $IGNORE $SNIFFS $FILES_TO_CHECK)
+RETVALPHPCS=$?
 
 # delete temporary copy of staging area
 rm -rf $TMP_STAGING
 
-if [ $RETVAL -ne 0 ]; then
+# check the return value from code sniffer
+if [ $RETVALPHPCS -ne 0 ]; then
     echo "Please fix the following code style error(s) and recommit."
-    echo "$OUTPUT"
+    echo "$OUTPUTPHPCS"
+    exit $RETVALPHPCS
 fi
 
-exit $RETVAL
+# execute phpunit
+OUTPUTPHPUNIT=$($PHPUNIT_BIN)
+RETVALPHPUNIT=$?
+
+# check the return value from phpunit
+if [ $RETVALPHPUNIT -ne 0 ]; then
+    echo "Please fix the following failing phpunit tests and recommit."
+    echo "$OUTPUTPHPUNIT"
+    exit $RETVALPHPUNIT
+fi
+
+# execute phpunit
+OUTPUTDUSK=$(php $(dirname $0)/../../artisan dusk)
+RETVALDUSK=$?
+
+# check the return value from phpunit
+if [ $RETVALDUSK -ne 0 ]; then
+    echo "Please fix the following failing laravel dusk tests and recommit."
+    echo "$OUTPUTDUSK"
+    exit $RETVALDUSK
+fi
+
+exit 0

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # path to phpcs "binary"
 PHPCS_BIN=$(dirname $0)/../../vendor/bin/phpcs
 
@@ -20,3 +22,6 @@ PHPCS_IGNORE_WARNINGS=0
 
 # encoding
 PHPCS_ENCODING=utf-8
+
+# path to phpunit "binary"
+PHPUNIT_BIN=$(dirname $0)/../../vendor/bin/phpunit
