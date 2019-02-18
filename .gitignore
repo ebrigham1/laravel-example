@@ -10,3 +10,4 @@ npm-debug.log
 .phpstorm.meta.php
 _ide_helper.php
 public/mix-manifest.json
+laravel-echo-server.lock
