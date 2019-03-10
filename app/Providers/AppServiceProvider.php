@@ -18,6 +18,18 @@ use Laravel\Telescope\TelescopeServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        if (!$this->app->environment(['testing'])) {
+            $this->app->register(TelescopeServiceProvider::class);
+        }
+    }
+
+    /**
      * Bootstrap any application services.
      *
      * @return void
@@ -37,17 +49,5 @@ class AppServiceProvider extends ServiceProvider
         ]);
         // Register blade component to handle breadcrumbs
         Blade::component('components.breadcrumbs', 'breadcrumbs');
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        if (!$this->app->environment(['testing'])) {
-            $this->app->register(TelescopeServiceProvider::class);
-        }
     }
 }
