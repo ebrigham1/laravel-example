@@ -17,8 +17,6 @@ trait FixModelNamespaces
         if ($this->hasOption('model')) {
             $this->input->setOption('model', $this->qualifyModelClass($this->option('model')));
         }
-        dump($this->option('model'));
-        exit;
         parent::handle();
     }
 
