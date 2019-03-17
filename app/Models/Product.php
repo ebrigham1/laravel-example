@@ -220,7 +220,7 @@ class Product extends LabelableWithLocationModel
     {
         if ($this->isInLocation($locationId)) {
             $productLocation = $this->productLocations()->where('location_id', $locationId)->first();
-            if ($productLocation->quantity - $number <= 1) {
+            if ($productLocation->quantity - $number <= 0) {
                 $this->locations()->detach($locationId);
             } else {
                 $productLocation->quantity -= $number;
@@ -240,7 +240,7 @@ class Product extends LabelableWithLocationModel
     {
         if ($this->isInSection($sectionId)) {
             $productSection = $this->productSections()->where('section_id', $sectionId)->first();
-            if ($productSection->quantity - $number <= 1) {
+            if ($productSection->quantity - $number <= 0) {
                 $this->sections()->detach($sectionId);
             } else {
                 $productSection->quantity -= $number;
@@ -260,7 +260,7 @@ class Product extends LabelableWithLocationModel
     {
         if ($this->isInWarehouse($warehouseId)) {
             $productWarehouse = $this->productWarehouses()->where('warehouse_id', $warehouseId)->first();
-            if ($productWarehouse->quantity - $number <= 1) {
+            if ($productWarehouse->quantity - $number <= 0) {
                 $this->warehouses()->detach($warehouseId);
             } else {
                 $productWarehouse->quantity -= $number;
