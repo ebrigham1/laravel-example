@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Location;
 use App\Models\Product;
+use App\Models\Section;
+use App\Models\Warehouse;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,7 +21,7 @@ class ProductTest extends TestCase
      */
     public function testIsInLocationTrue()
     {
-        // Setup two test products and two test locations
+        // Setup two test products and locations
         $products = factory(Product::class, 2)->create();
         $locations = factory(Location::class, 2)->create();
 
@@ -53,7 +55,7 @@ class ProductTest extends TestCase
      */
     public function testIsInLocationFalse()
     {
-        // Setup two test products and two test locations
+        // Setup two test products and locations
         $products = factory(Product::class, 2)->create();
         $locations = factory(Location::class, 2)->create();
 
@@ -79,11 +81,109 @@ class ProductTest extends TestCase
         $this->assertFalse($products[0]->isInLocation($locations[1]->id));
         $this->assertFalse($products[1]->isInLocation($locations[0]->id));
 
-        // Create two more labels for $products[1] in $locations[0] and make sure isInLocation still reports true
-        // for $products[0] in $locations[0], this makes sure the number of labels has no effect on isInLocation
+        // Create two more labels for $products[1] in $locations[1] and make sure isInLocation still reports false
+        // for $products[0] in $locations[1], this makes sure the number of labels has no effect on isInLocation
         $products[1]->createLabels(2, $locations[1]);
         $this->assertFalse($products[0]->isInLocation($locations[1]->id));
         $this->assertFalse($products[1]->isInLocation($locations[0]->id));
+    }
+
+    /**
+     * Test is in section returns true when a product is in a section
+     *
+     * @return void
+     */
+    public function testIsInSectionTrue()
+    {
+        // Setup two test products, locations, sections, and warehouses
+        $products = factory(Product::class, 2)->create();
+        // Need to create warehouses to avoid foreign key constraint violations on sections
+        $warehouses = factory(Warehouse::class, 2)->create();
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[0]->id]);
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[1]->id]);
+        // Create two locations and attach the first section to them
+        $locations = factory(Location::class, 2)->create()->each(function ($location, $key) use ($sections) {
+            // Attach section 0 to location 0 and section 1 to location 1
+            if ($key == 0) {
+                $location->section()->associate($sections[0])->save();
+            } else {
+                $location->section()->associate($sections[1])->save();
+            }
+        });
+
+        // Create one label for $products[0] in $locations[0] and make sure isInSection reports true for
+        // $products[0] in $locations[0]
+        $products[0]->createLabels(1, $locations[0]);
+        $this->assertTrue($products[0]->isInSection($sections[0]->id));
+
+        // Create two more labels for $products[0] in $locations[0] and make sure isInSection still reports true
+        // for $products[0] in $locations[0], this makes sure the number of labels has no effect on isInSection
+        $products[0]->createLabels(2, $locations[0]);
+        $this->assertTrue($products[0]->isInSection($sections[0]->id));
+
+        // Create one label for $products[1] in $locations[1] and make sure it doesn't effect isInSection for
+        // $products[0] in $locations[0] also make sure $products[1] is now reported in $locations[1]
+        $products[1]->createLabels(1, $locations[1]);
+        $this->assertTrue($products[0]->isInSection($sections[0]->id));
+        $this->assertTrue($products[1]->isInSection($sections[1]->id));
+
+        // Create two more labels for $products[1] in $locations[1] and make sure it doesn't effect isInSection for
+        // $products[0] in $locations[0] or isInSection for $products[1] in $locations[1]
+        $products[1]->createLabels(2, $locations[1]);
+        $this->assertTrue($products[0]->isInSection($sections[0]->id));
+        $this->assertTrue($products[1]->isInSection($sections[1]->id));
+    }
+
+    /**
+     * Test is in section returns false when a product is not in a section
+     *
+     * @return void
+     */
+    public function testIsInSectionFalse()
+    {
+        // Setup two test products, locations, sections, and warehouses
+        $products = factory(Product::class, 2)->create();
+        // Need to create warehouses to avoid foreign key constraint violations on sections
+        $warehouses = factory(Warehouse::class, 2)->create();
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[0]->id]);
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[1]->id]);
+        // Create two locations and attach the first section to them
+        $locations = factory(Location::class, 2)->create()->each(function ($location, $key) use ($sections) {
+            // Attach section 0 to location 0 and section 1 to location 1
+            if ($key == 0) {
+                $location->section()->associate($sections[0])->save();
+            } else {
+                $location->section()->associate($sections[1])->save();
+            }
+        });
+
+        // Make sure when no labels are created for either product that neither is considered in either section
+        $this->assertFalse($products[0]->isInSection($sections[0]->id));
+        $this->assertFalse($products[0]->isInSection($sections[1]->id));
+        $this->assertFalse($products[1]->isInSection($sections[0]->id));
+        $this->assertFalse($products[1]->isInSection($sections[1]->id));
+
+        // Create one label for $products[0] in $locations[0] and make sure isInSection reports false for
+        // $products[0] in $sections[1] (its only in $sections[0]
+        $products[0]->createLabels(1, $locations[0]);
+        $this->assertFalse($products[0]->isInSection($sections[1]->id));
+
+        // Create two more labels for $products[0] in $locations[0] and make sure isInSection still reports false
+        // for $products[0] in $sections[1], this makes sure the number of labels has no effect on isInSection
+        $products[0]->createLabels(2, $locations[0]);
+        $this->assertFalse($products[0]->isInSection($sections[1]->id));
+
+        // Create one label for $products[1] in $locations[1] and make sure it doesn't effect isInSection for
+        // $products[0] in $sections[1] also make sure $products[1] is not reported in $sections[0]
+        $products[1]->createLabels(1, $locations[1]);
+        $this->assertFalse($products[0]->isInSection($sections[1]->id));
+        $this->assertFalse($products[1]->isInSection($sections[0]->id));
+
+        // Create two more labels for $products[1] in $locations[1] and make sure isInSection still reports false
+        // for $products[0] in $sections[1], this makes sure the number of labels has no effect on isInSection
+        $products[1]->createLabels(2, $locations[1]);
+        $this->assertFalse($products[0]->isInSection($sections[1]->id));
+        $this->assertFalse($products[1]->isInSection($sections[0]->id));
     }
 
     /**
@@ -93,7 +193,7 @@ class ProductTest extends TestCase
      */
     public function testLocationQuantity()
     {
-        // Setup two test products and two test locations
+        // Setup two test products and locations
         $products = factory(Product::class, 2)->create();
         $locations = factory(Location::class, 2)->create();
 
