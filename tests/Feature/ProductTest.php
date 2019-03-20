@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Label;
 use App\Models\Location;
 use App\Models\Product;
 use App\Models\Section;
@@ -37,7 +38,12 @@ class ProductTest extends TestCase
 
         // Create one label for $products[1] in $locations[1] and make sure it doesn't effect isInLocation for
         // $products[0] in $locations[0] also make sure $products[1] is now reported in $locations[1]
-        $products[1]->createLabels(1, $locations[1]);
+        // Create One more label in a different way and make sure the location quantity is updated correctly
+        $label = new Label;
+        $label->location_id = $locations[1]->id;
+        $label->labelable_id = $products[1]->id;
+        $label->labelable_type = $products[1]->labels()->getMorphClass();
+        $label->save();
         $this->assertTrue($products[0]->isInLocation($locations[0]->id));
         $this->assertTrue($products[1]->isInLocation($locations[1]->id));
 
@@ -123,7 +129,11 @@ class ProductTest extends TestCase
 
         // Create one label for $products[1] in $locations[1] and make sure it doesn't effect isInSection for
         // $products[0] in $sections[0] also make sure $products[1] is now reported in $sections[1]
-        $products[1]->createLabels(1, $locations[1]);
+        $label = new Label;
+        $label->location_id = $locations[1]->id;
+        $label->labelable_id = $products[1]->id;
+        $label->labelable_type = $products[1]->labels()->getMorphClass();
+        $label->save();
         $this->assertTrue($products[0]->isInSection($sections[0]->id));
         $this->assertTrue($products[1]->isInSection($sections[1]->id));
 
@@ -220,7 +230,11 @@ class ProductTest extends TestCase
 
         // Create one label for $products[1] in $locations[1] and make sure it doesn't effect isInWarehouse for
         // $products[0] in $warehouses[0] also make sure $products[1] is now reported in $warehouses[1]
-        $products[1]->createLabels(1, $locations[1]);
+        $label = new Label;
+        $label->location_id = $locations[1]->id;
+        $label->labelable_id = $products[1]->id;
+        $label->labelable_type = $products[1]->labels()->getMorphClass();
+        $label->save();
         $this->assertTrue($products[0]->isInWarehouse($warehouses[0]->id));
         $this->assertTrue($products[1]->isInWarehouse($warehouses[1]->id));
 
@@ -324,13 +338,25 @@ class ProductTest extends TestCase
             'quantity' => 3,
         ]);
 
+        // Create One more label in a different way and make sure the location quantity is updated correctly
+        $label = new Label;
+        $label->location_id = $locations[0]->id;
+        $label->labelable_id = $products[0]->id;
+        $label->labelable_type = $products[0]->labels()->getMorphClass();
+        $label->save();
+        $this->assertDatabaseHas('product_locations', [
+            'product_id' => $products[0]->id,
+            'location_id' => $locations[0]->id,
+            'quantity' => 4,
+        ]);
+
         // Remove one of the labels and make sure the the quantity is updated correctly
         $label = $products[0]->labels()->first();
         $label->delete();
         $this->assertDatabaseHas('product_locations', [
             'product_id' => $products[0]->id,
             'location_id' => $locations[0]->id,
-            'quantity' => 2,
+            'quantity' => 3,
         ]);
         // Move a label and make sure the quantity is updated correctly
         $label = $products[0]->labels()->first();
@@ -339,7 +365,7 @@ class ProductTest extends TestCase
         $this->assertDatabaseHas('product_locations', [
             'product_id' => $products[0]->id,
             'location_id' => $locations[0]->id,
-            'quantity' => 1,
+            'quantity' => 2,
         ]);
         $this->assertDatabaseHas('product_locations', [
             'product_id' => $products[0]->id,
@@ -348,6 +374,8 @@ class ProductTest extends TestCase
         ]);
 
         // Now delete the remaining labels and make sure we are back to no quantities anywhere
+        $label->delete();
+        $label = $products[0]->labels()->first();
         $label->delete();
         $label = $products[0]->labels()->first();
         $label->delete();
@@ -368,6 +396,100 @@ class ProductTest extends TestCase
      */
     public function testSectionQuantity()
     {
+        // Setup two test products, locations, sections, and warehouses
+        $products = factory(Product::class, 2)->create();
+        // Need to create warehouses to avoid foreign key constraint violations on sections
+        $warehouses = factory(Warehouse::class, 2)->create();
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[0]->id]);
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[1]->id]);
+        // Create two locations and attach the first section to them
+        $locations = factory(Location::class, 2)->create()->each(function ($location, $key) use ($sections) {
+            // Attach section 0 to location 0 and section 1 to location 1
+            if ($key == 0) {
+                $location->section()->associate($sections[0])->save();
+            } else {
+                $location->section()->associate($sections[1])->save();
+            }
+        });
+
+        // Create one label for $products[0] in $locations[0] and our product_sections records are correct
+        // and have the correct quantity
+        $products[0]->createLabels(1, $locations[0]);
+        // We've created one label and put it in a given location so the section quantity for that should be stored
+        // in the database at this point
+        $this->assertDatabaseHas('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[0]->id,
+            'quantity' => 1,
+        ]);
+        // There should be no record here at this point since there is no quantity in this section
+        $this->assertDatabaseMissing('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[1]->id,
+        ]);
+        // There should be no record here at this point since we didn't create labels for this product
+        $this->assertDatabaseMissing('product_sections', [
+            'product_id' => $products[1]->id,
+            'section_id' => $sections[0]->id,
+        ]);
+
+        // Create two more labels in the location and make sure the section quantity is updated correctly
+        $products[0]->createLabels(2, $locations[0]);
+        $this->assertDatabaseHas('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[0]->id,
+            'quantity' => 3,
+        ]);
+
+        // Create One more label in a different way and make sure the section quantity is updated correctly
+        $label = new Label;
+        $label->location_id = $locations[0]->id;
+        $label->labelable_id = $products[0]->id;
+        $label->labelable_type = $products[0]->labels()->getMorphClass();
+        $label->save();
+        $this->assertDatabaseHas('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[0]->id,
+            'quantity' => 4,
+        ]);
+
+        // Remove one of the labels and make sure the the quantity is updated correctly
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertDatabaseHas('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[0]->id,
+            'quantity' => 3,
+        ]);
+        // Move a label and make sure the quantity is updated correctly
+        $label = $products[0]->labels()->first();
+        $label->location_id = $locations[1]->id;
+        $label->save();
+        $this->assertDatabaseHas('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[0]->id,
+            'quantity' => 2,
+        ]);
+        $this->assertDatabaseHas('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[1]->id,
+            'quantity' => 1,
+        ]);
+
+        // Now delete the remaining labels and make sure we are back to no quantities anywhere
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertDatabaseMissing('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[0]->id,
+        ]);
+        $this->assertDatabaseMissing('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[1]->id,
+        ]);
     }
 
     /**
@@ -377,5 +499,99 @@ class ProductTest extends TestCase
      */
     public function testWarehouseQuantity()
     {
+        // Setup two test products, locations, sections, and warehouses
+        $products = factory(Product::class, 2)->create();
+        // Need to create warehouses to avoid foreign key constraint violations on sections
+        $warehouses = factory(Warehouse::class, 2)->create();
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[0]->id]);
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[1]->id]);
+        // Create two locations and attach the first section to them
+        $locations = factory(Location::class, 2)->create()->each(function ($location, $key) use ($sections) {
+            // Attach section 0 to location 0 and section 1 to location 1
+            if ($key == 0) {
+                $location->section()->associate($sections[0])->save();
+            } else {
+                $location->section()->associate($sections[1])->save();
+            }
+        });
+
+        // Create one label for $products[0] in $locations[0] and make sure our product_warehouses records are correct
+        // and have the correct quantity
+        $products[0]->createLabels(1, $locations[0]);
+        // We've created one label and put it in a given location so the warehouse quantity for that should be stored
+        // in the database at this point
+        $this->assertDatabaseHas('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[0]->id,
+            'quantity' => 1,
+        ]);
+        // There should be no record here at this point since there is no quantity in this warehouse
+        $this->assertDatabaseMissing('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[1]->id,
+        ]);
+        // There should be no record here at this point since we didn't create labels for this product
+        $this->assertDatabaseMissing('product_warehouses', [
+            'product_id' => $products[1]->id,
+            'warehouse_id' => $warehouses[0]->id,
+        ]);
+
+        // Create two more labels in the location and make sure the warehouse quantity is updated correctly
+        $products[0]->createLabels(2, $locations[0]);
+        $this->assertDatabaseHas('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[0]->id,
+            'quantity' => 3,
+        ]);
+
+        // Create One more label in a different way and make sure the warehouse quantity is updated correctly
+        $label = new Label;
+        $label->location_id = $locations[0]->id;
+        $label->labelable_id = $products[0]->id;
+        $label->labelable_type = $products[0]->labels()->getMorphClass();
+        $label->save();
+        $this->assertDatabaseHas('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[0]->id,
+            'quantity' => 4,
+        ]);
+
+        // Remove one of the labels and make sure the the quantity is updated correctly
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertDatabaseHas('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[0]->id,
+            'quantity' => 3,
+        ]);
+        // Move a label and make sure the quantity is updated correctly
+        $label = $products[0]->labels()->first();
+        $label->location_id = $locations[1]->id;
+        $label->save();
+        $this->assertDatabaseHas('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[0]->id,
+            'quantity' => 2,
+        ]);
+        $this->assertDatabaseHas('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[1]->id,
+            'quantity' => 1,
+        ]);
+
+        // Now delete the remaining labels and make sure we are back to no quantities anywhere
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertDatabaseMissing('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[0]->id,
+        ]);
+        $this->assertDatabaseMissing('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[1]->id,
+        ]);
     }
 }
