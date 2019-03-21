@@ -594,4 +594,272 @@ class ProductTest extends TestCase
             'warehouse_id' => $warehouses[1]->id,
         ]);
     }
+
+    /**
+     * Test that we can correctly get the location quantity
+     *
+     * @return void
+     */
+    public function testGetLocationQuantity()
+    {
+        // Setup two test products, locations, sections, and warehouses
+        $products = factory(Product::class, 2)->create();
+        // Need to create warehouses to avoid foreign key constraint violations on sections
+        $warehouses = factory(Warehouse::class, 2)->create();
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[0]->id]);
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[1]->id]);
+        // Create two locations and attach the first section to them
+        $locations = factory(Location::class, 2)->create()->each(function ($location, $key) use ($sections) {
+            // Attach section 0 to location 0 and section 1 to location 1
+            if ($key == 0) {
+                $location->section()->associate($sections[0])->save();
+            } else {
+                $location->section()->associate($sections[1])->save();
+            }
+        });
+
+        // Should be 0 at this point since we haven't put any products in any locations
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
+
+        // Create one label in the location and make sure the location quantity we get is correct
+        $products[0]->createLabels(1, $locations[0]);
+        $this->assertEquals(1, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
+
+        // Create two more labels in the location and make sure the location quantity we get is correct
+        $products[0]->createLabels(2, $locations[0]);
+        $this->assertEquals(3, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
+
+        // Create one more label in a different way and make sure the location quantity is correct
+        $label = new Label;
+        $label->location_id = $locations[0]->id;
+        $label->labelable_id = $products[0]->id;
+        $label->labelable_type = $products[0]->labels()->getMorphClass();
+        $label->save();
+        $this->assertEquals(4, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
+
+        // Remove one of the labels and make sure the the quantity is correct
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertEquals(3, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
+
+        // Move a label and make sure the quantity is correct
+        $label = $products[0]->labels()->first();
+        $label->location_id = $locations[1]->id;
+        $label->save();
+        $this->assertEquals(2, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(1, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
+
+        // Now delete the remaining labels and make sure we are back to no quantities anywhere
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
+    }
+
+    /**
+     * Test that we can correctly get the section quantity
+     *
+     * @return void
+     */
+    public function testGetSectionQuantity()
+    {
+        // Setup two test products, locations, sections, and warehouses
+        $products = factory(Product::class, 2)->create();
+        // Need to create warehouses to avoid foreign key constraint violations on sections
+        $warehouses = factory(Warehouse::class, 2)->create();
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[0]->id]);
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[1]->id]);
+        // Create two locations and attach the first section to them
+        $locations = factory(Location::class, 3)->create()->each(function ($location, $key) use ($sections) {
+            // Attach section 0 to location 0 and section 1 to location 1
+            if ($key == 0) {
+                $location->section()->associate($sections[0])->save();
+            } else {
+                $location->section()->associate($sections[1])->save();
+            }
+        });
+
+        // Should be 0 at this point since we haven't put any products in any locations
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
+
+        // Create one label in the location and make sure the section quantity we get is correct
+        $products[0]->createLabels(1, $locations[0]);
+        $this->assertEquals(1, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
+
+        // Create two more labels in the location and make sure the section quantity we get is correct
+        $products[0]->createLabels(2, $locations[0]);
+        $this->assertEquals(3, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
+
+        // Create one more label in a different way and make sure the section quantity is correct
+        $label = new Label;
+        $label->location_id = $locations[0]->id;
+        $label->labelable_id = $products[0]->id;
+        $label->labelable_type = $products[0]->labels()->getMorphClass();
+        $label->save();
+        $this->assertEquals(4, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
+
+        // Remove one of the labels and make sure the the quantity is correct
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertEquals(3, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
+
+        // Move a label and make sure the quantity is correct
+        $label = $products[0]->labels()->first();
+        $label->location_id = $locations[1]->id;
+        $label->save();
+        $this->assertEquals(2, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(1, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
+
+        $label = $products[0]->labels()->orderBy('id', 'desc')->first();
+        $label->location_id = $locations[2]->id;
+        $label->save();
+        $this->assertEquals(1, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(2, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
+
+        // Now delete the remaining labels and make sure we are back to no quantities anywhere
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
+    }
+
+    /**
+     * Test that we can correctly get warehouse quantity
+     *
+     * @return void
+     */
+    public function testGetWarehouseQuantity()
+    {
+        // Setup two test products, locations, sections, and warehouses
+        $products = factory(Product::class, 2)->create();
+        // Need to create warehouses to avoid foreign key constraint violations on sections
+        $warehouses = factory(Warehouse::class, 2)->create();
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[0]->id]);
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[1]->id]);
+        $sections[] = factory(Section::class)->create(['warehouse_id' => $warehouses[1]->id]);
+        // Create two locations and attach the first section to them
+        $locations = factory(Location::class, 3)->create()->each(function ($location, $key) use ($sections) {
+            // Attach section 0 to location 0 and section 1 to location 1
+            if ($key == 0) {
+                $location->section()->associate($sections[0])->save();
+            } elseif ($key == 1) {
+                $location->section()->associate($sections[1])->save();
+            } else {
+                $location->section()->associate($sections[2])->save();
+            }
+        });
+
+        // Should be 0 at this point since we haven't put any products in any warehouses
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
+
+        // Create one label in the location and make sure the warehouse quantity we get is correct
+        $products[0]->createLabels(1, $locations[0]);
+        $this->assertEquals(1, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
+
+        // Create two more labels in the location and make sure the warehouse quantity we get is correct
+        $products[0]->createLabels(2, $locations[0]);
+        $this->assertEquals(3, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
+
+        // Create one more label in a different way and make sure the warehouse quantity is correct
+        $label = new Label;
+        $label->location_id = $locations[0]->id;
+        $label->labelable_id = $products[0]->id;
+        $label->labelable_type = $products[0]->labels()->getMorphClass();
+        $label->save();
+        $this->assertEquals(4, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
+
+        // Remove one of the labels and make sure the the quantity is correct
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertEquals(3, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
+
+        // Move a label and make sure the quantity is correct
+        $label = $products[0]->labels()->first();
+        $label->location_id = $locations[1]->id;
+        $label->save();
+        $this->assertEquals(2, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(1, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
+
+        $label = $products[0]->labels()->orderBy('id', 'desc')->first();
+        $label->location_id = $locations[2]->id;
+        $label->save();
+        $this->assertEquals(1, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(2, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
+
+        // Now delete the remaining labels and make sure we are back to no quantities anywhere
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $label = $products[0]->labels()->first();
+        $label->delete();
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
+    }
 }
