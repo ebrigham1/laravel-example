@@ -35,6 +35,28 @@ else
     against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
 fi
 
+# execute phpunit
+OUTPUTPHPUNIT=$($PHPUNIT_BIN)
+RETVALPHPUNIT=$?
+
+# check the return value from phpunit
+if [ $RETVALPHPUNIT -ne 0 ]; then
+    echo "Please fix the following failing phpunit tests and recommit."
+    echo "$OUTPUTPHPUNIT"
+    exit $RETVALPHPUNIT
+fi
+
+# execute phpunit
+OUTPUTDUSK=$(php $(dirname $0)/../../artisan dusk)
+RETVALDUSK=$?
+
+# check the return value from phpunit
+if [ $RETVALDUSK -ne 0 ]; then
+    echo "Please fix the following failing laravel dusk tests and recommit."
+    echo "$OUTPUTDUSK"
+    exit $RETVALDUSK
+fi
+
 # this is the magic: 
 # retrieve all files in staging area that are added, modified or renamed
 # but no deletions etc
@@ -96,28 +118,6 @@ if [ $RETVALPHPCS -ne 0 ]; then
     echo "Please fix the following code style error(s) and recommit."
     echo "$OUTPUTPHPCS"
     exit $RETVALPHPCS
-fi
-
-# execute phpunit
-OUTPUTPHPUNIT=$($PHPUNIT_BIN)
-RETVALPHPUNIT=$?
-
-# check the return value from phpunit
-if [ $RETVALPHPUNIT -ne 0 ]; then
-    echo "Please fix the following failing phpunit tests and recommit."
-    echo "$OUTPUTPHPUNIT"
-    exit $RETVALPHPUNIT
-fi
-
-# execute phpunit
-OUTPUTDUSK=$(php $(dirname $0)/../../artisan dusk)
-RETVALDUSK=$?
-
-# check the return value from phpunit
-if [ $RETVALDUSK -ne 0 ]; then
-    echo "Please fix the following failing laravel dusk tests and recommit."
-    echo "$OUTPUTDUSK"
-    exit $RETVALDUSK
 fi
 
 exit 0
