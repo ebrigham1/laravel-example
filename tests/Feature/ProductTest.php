@@ -375,8 +375,26 @@ class ProductTest extends TestCase
 
         // Now delete the remaining labels and make sure we are back to no quantities anywhere
         $label->delete();
+        $this->assertDatabaseHas('product_locations', [
+            'product_id' => $products[0]->id,
+            'location_id' => $locations[0]->id,
+            'quantity' => 2,
+        ]);
+        $this->assertDatabaseMissing('product_locations', [
+            'product_id' => $products[0]->id,
+            'location_id' => $locations[1]->id,
+        ]);
         $label = $products[0]->labels()->first();
         $label->delete();
+        $this->assertDatabaseHas('product_locations', [
+            'product_id' => $products[0]->id,
+            'location_id' => $locations[0]->id,
+            'quantity' => 1,
+        ]);
+        $this->assertDatabaseMissing('product_locations', [
+            'product_id' => $products[0]->id,
+            'location_id' => $locations[1]->id,
+        ]);
         $label = $products[0]->labels()->first();
         $label->delete();
         $this->assertDatabaseMissing('product_locations', [
@@ -478,8 +496,26 @@ class ProductTest extends TestCase
 
         // Now delete the remaining labels and make sure we are back to no quantities anywhere
         $label->delete();
+        $this->assertDatabaseHas('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[0]->id,
+            'quantity' => 2,
+        ]);
+        $this->assertDatabaseMissing('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[1]->id,
+        ]);
         $label = $products[0]->labels()->first();
         $label->delete();
+        $this->assertDatabaseHas('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[0]->id,
+            'quantity' => 1,
+        ]);
+        $this->assertDatabaseMissing('product_sections', [
+            'product_id' => $products[0]->id,
+            'section_id' => $sections[1]->id,
+        ]);
         $label = $products[0]->labels()->first();
         $label->delete();
         $this->assertDatabaseMissing('product_sections', [
@@ -581,8 +617,26 @@ class ProductTest extends TestCase
 
         // Now delete the remaining labels and make sure we are back to no quantities anywhere
         $label->delete();
+        $this->assertDatabaseHas('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[0]->id,
+            'quantity' => 2,
+        ]);
+        $this->assertDatabaseMissing('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[1]->id,
+        ]);
         $label = $products[0]->labels()->first();
         $label->delete();
+        $this->assertDatabaseHas('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[0]->id,
+            'quantity' => 1,
+        ]);
+        $this->assertDatabaseMissing('product_warehouses', [
+            'product_id' => $products[0]->id,
+            'warehouse_id' => $warehouses[1]->id,
+        ]);
         $label = $products[0]->labels()->first();
         $label->delete();
         $this->assertDatabaseMissing('product_warehouses', [
@@ -668,8 +722,16 @@ class ProductTest extends TestCase
 
         // Now delete the remaining labels and make sure we are back to no quantities anywhere
         $label->delete();
+        $this->assertEquals(2, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
         $label = $products[0]->labels()->first();
         $label->delete();
+        $this->assertEquals(1, $products[0]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[0]->id));
+        $this->assertEquals(0, $products[0]->getLocationQuantity($locations[1]->id));
+        $this->assertEquals(0, $products[1]->getLocationQuantity($locations[1]->id));
         $label = $products[0]->labels()->first();
         $label->delete();
         $this->assertEquals(0, $products[0]->getLocationQuantity($locations[0]->id));
@@ -759,8 +821,16 @@ class ProductTest extends TestCase
 
         // Now delete the remaining labels and make sure we are back to no quantities anywhere
         $label->delete();
+        $this->assertEquals(1, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(1, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
         $label = $products[0]->labels()->first();
         $label->delete();
+        $this->assertEquals(1, $products[0]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[0]->id));
+        $this->assertEquals(0, $products[0]->getSectionQuantity($sections[1]->id));
+        $this->assertEquals(0, $products[1]->getSectionQuantity($sections[1]->id));
         $label = $products[0]->labels()->first();
         $label->delete();
         $this->assertEquals(0, $products[0]->getSectionQuantity($sections[0]->id));
@@ -853,8 +923,16 @@ class ProductTest extends TestCase
 
         // Now delete the remaining labels and make sure we are back to no quantities anywhere
         $label->delete();
+        $this->assertEquals(1, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(1, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
         $label = $products[0]->labels()->first();
         $label->delete();
+        $this->assertEquals(1, $products[0]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[0]->id));
+        $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[1]->id));
+        $this->assertEquals(0, $products[1]->getWarehouseQuantity($warehouses[1]->id));
         $label = $products[0]->labels()->first();
         $label->delete();
         $this->assertEquals(0, $products[0]->getWarehouseQuantity($warehouses[0]->id));

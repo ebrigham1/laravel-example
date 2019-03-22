@@ -5,6 +5,8 @@
 # be run after the Homestead machine is provisioned.
 
 cd /home/vagrant/code
+# Set up the testing environment
+cp .env.testing.example .env.testing
 # Set up the code style checking pre-commit hook
 cp githooks/pre-commit .git/hooks/pre-commit
 cp githooks/config-pre-commit .git/hooks/config-pre-commit
