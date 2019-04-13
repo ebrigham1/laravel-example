@@ -41,7 +41,7 @@
                             </a>
                             <div class="input-group-append">
                                 <span class="input-group-btn">
-                                    @include('shared.deleteButton', ['size' => 'lg', 'name' => 'user' . $user->id, 'route' => route('roles.users.destroy', ['role' => $role, 'user' => $user]), 'deleteIcon' => 'fa-user-times'])
+                                    @include('shared.deleteButton', ['size' => 'lg', 'id' => 'user' . $user->id, 'name' => 'user', 'route' => route('roles.users.destroy', ['role' => $role, 'user' => $user]), 'deleteIcon' => 'fa-user-times'])
                                 </span>
                             </div>
                         </div>

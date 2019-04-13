@@ -24,7 +24,7 @@
             <a class="btn btn-primary" href="{{ route('sections.print', ['section' => $section]) }}">Print</a>
             <br><br>
             <a class="btn btn-primary" href="{{ route('sections.edit', ['section' => $section]) }}">Edit</a>
-            @include('shared.deleteButton', ['name' => 'section', 'route' => route('sections.destroy', ['section' => $section])])
+            @include('shared.deleteButton', ['id' => 'section' . $section->id, 'name' => 'section', 'route' => route('sections.destroy', ['section' => $section])])
         </div>
     </div>
 @endsection

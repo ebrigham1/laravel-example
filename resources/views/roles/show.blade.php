@@ -25,7 +25,7 @@
             <a class="btn btn-info" href="{{ route('roles.users', ['role'  => $role]) }}">Users</a>
             {{-- <a class="btn btn-info" href="{{ route('permissions.index', ['role'  => $role]) }}">Permissions</a> --}}<br><br>
             <a class="btn btn-primary" href="{{ route('roles.edit', ['role' => $role]) }}">Edit</a>
-            @include('shared.deleteButton', ['name' => 'role', 'route' => route('roles.destroy', ['role' => $role])])
+            @include('shared.deleteButton', ['id' => 'role' . $role->id, 'name' => 'role', 'route' => route('roles.destroy', ['role' => $role])])
         </div>
     </div>
 @endsection

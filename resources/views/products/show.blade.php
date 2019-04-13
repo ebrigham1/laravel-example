@@ -22,7 +22,7 @@
             <a class="btn btn-info" href="{{ route('products.locations', ['product'  => $product]) }}">Locations</a>
             <br><br>
             <a class="btn btn-primary" href="{{ route('products.edit', ['product' => $product]) }}">Edit</a>
-            @include('shared.deleteButton', ['name' => 'product', 'route' => route('products.destroy', ['product' => $product])])
+            @include('shared.deleteButton', ['id' => 'product' . $product->id, 'name' => 'product', 'route' => route('products.destroy', ['product' => $product])])
             <div class="modal fade" id="createLabelsModal" role="dialog" aria-labelledby="createLabelsModalLabel" aria-hidden="{{ $errors->has('location') || $errors->has('number') ? 'false' : 'true' }}">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">

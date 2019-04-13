@@ -22,7 +22,7 @@
             </dl>
             <br><br>
             <button id="moveLabel" class="btn btn-primary" data-toggle="modal" data-target="#moveLabelModal">Move</button>
-            @include('shared.deleteButton', ['name' => 'label', 'route' => route('labels.destroy', ['label' => $label])])
+            @include('shared.deleteButton', ['id' => 'label' . $label->id, 'name' => 'label', 'route' => route('labels.destroy', ['label' => $label])])
             <div class="modal fade" id="moveLabelModal" role="dialog" aria-labelledby="moveLabelModalLabel" aria-hidden="{{ $errors->has('location') ? 'false' : 'true' }}">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">

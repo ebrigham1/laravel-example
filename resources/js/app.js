@@ -21,10 +21,10 @@ $('[data-toggle=deleteConfirmation]').confirmation({
     popout: true,
     btnOkLabel: 'Delete',
     btnOkIcon: 'glyphicon glyphicon-trash',
-    btnOkClass: 'btn-success',
+    btnOkClass: 'btn btn-success',
     btnCancelLabel: 'Cancel',
     btnCancelIcon: 'glyphicon glyphicon-ban-circle',
-    btnCancelClass: 'btn-danger',
+    btnCancelClass: 'btn btn-danger',
 });
 // Initialize remote user select2
 $('[data-toggle="remoteUserSelect2"]').select2({

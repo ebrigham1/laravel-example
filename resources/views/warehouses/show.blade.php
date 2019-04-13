@@ -22,7 +22,7 @@
             <a class="btn btn-primary" href="{{ route('warehouses.print', ['warehouse' => $warehouse]) }}">Print</a>
             <br><br>
             <a class="btn btn-primary" href="{{ route('warehouses.edit', ['warehouse' => $warehouse]) }}">Edit</a>
-            @include('shared.deleteButton', ['name' => 'warehouse', 'route' => route('warehouses.destroy', ['warehouse' => $warehouse])])
+            @include('shared.deleteButton', ['id' => 'warehouse' . $warehouse->id, 'name' => 'warehouse', 'route' => route('warehouses.destroy', ['warehouse' => $warehouse])])
         </div>
     </div>
 @endsection
