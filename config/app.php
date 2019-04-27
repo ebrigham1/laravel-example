@@ -166,7 +166,7 @@ return [
          * Package Service Providers...
          */
         Zizaco\Entrust\EntrustServiceProvider::class,
-        Sven\EnvProviders\EnvServiceProvider::class,
+        Sven\EnvProviders\ServiceProvider::class,
 
         /*
          * Application Service Providers...
