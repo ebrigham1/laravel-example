@@ -18,8 +18,8 @@
         "bootstrap-hover-dropdown": "^2.2.1",
         "cross-env": "^5.2.0",
         "font-awesome": "^4.7.0",
-        "infinite-scroll": "^3.0.5",
-        "jquery": "^3.4.0",
+        "infinite-scroll": "^3.0.6",
+        "jquery": "^3.4.1",
         "laravel-echo": "^1.5.3",
         "laravel-mix": "^4.0.15",
         "lodash": "^4.17.11",
@@ -27,8 +27,8 @@
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "resolve-url-loader": "^2.3.2",
-        "sass": "^1.19.0",
+        "sass": "^1.20.1",
         "sass-loader": "^7.1.0",
-        "select2": "^4.0.5"
+        "select2": "^4.0.7"
     }
 }
