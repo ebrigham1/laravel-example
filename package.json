@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "@babel/preset-react": "^7.0.0",
-        "axios": "^0.18",
+        "axios": "^0.18.1",
         "babel-preset-react": "^6.23.0",
         "bootstrap": "^4.3.1",
         "bootstrap-confirmation2": "^4.1.0",
@@ -20,15 +20,15 @@
         "font-awesome": "^4.7.0",
         "infinite-scroll": "^3.0.6",
         "jquery": "^3.4.1",
-        "laravel-echo": "^1.5.3",
-        "laravel-mix": "^4.0.15",
-        "lodash": "^4.17.11",
+        "laravel-echo": "^1.5.4",
+        "laravel-mix": "^4.1.2",
+        "lodash": "^4.17.15",
         "popper.js": "^1.15.0",
-        "react": "^16.8.6",
-        "react-dom": "^16.8.6",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
         "resolve-url-loader": "^2.3.2",
-        "sass": "^1.20.1",
-        "sass-loader": "^7.1.0",
-        "select2": "^4.0.7"
+        "sass": "^1.22.10",
+        "sass-loader": "^7.2.0",
+        "select2": "^4.0.8"
     }
 }
