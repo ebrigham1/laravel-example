@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('./components/App')
 
 // Set up csrf token for jquery ajax
 $.ajaxSetup({

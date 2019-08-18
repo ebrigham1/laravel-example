@@ -168,4 +168,6 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('ledger');
         }
     );
+
+    Route::view('/reactTest', 'app');
 });

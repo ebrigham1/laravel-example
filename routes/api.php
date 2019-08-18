@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('projects', 'ProjectController@index')->name('projects');
+Route::post('projects', 'ProjectController@store')->name('storeProject');
+Route::get('projects/{id}', 'ProjectController@show')->name('viewProject');
+Route::put('projects/{project}', 'ProjectController@markAsCompleted')->name('completeProject');
+Route::post('tasks', 'TaskController@store')->name('storeTask');
+Route::put('tasks/{task}', 'TaskController@markAsCompleted')->name('completeTask');
