@@ -8,7 +8,7 @@
                 <li class="breadcrumb-item active" aria-current="page">About</li>
             @endbreadcrumbs
             <div class="page-header">
-                <h1>About Example</h1>
+                <h1>About</h1>
             </div>
         </div>
     </div>
